@@ -11,6 +11,14 @@ import {GlobalStateProvider} from '@/context/GlobalStateContext';
 
 
 
+// TODO: Cache Components adoption. Refactor this route so this opt-out can be removed.
+// See: https://nextjs.org/docs/app/guides/migrating-to-cache-components
+export const instant = false;
+
+
+
+
+
 // Configs
 export const metadata: Metadata = {
   title:'Qodum',
@@ -43,4 +51,4 @@ export default function RootLayout({children}:{children:React.ReactNode}) {
       </body>
     </html>
   );
-};
+}
