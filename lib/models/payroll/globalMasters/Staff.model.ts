@@ -115,5 +115,5 @@ const StaffSchema = new mongoose.Schema(
 
 
 // Export
-const Staff = mongoose.models.Staff || mongoose.model('Staff', StaffSchema);
+const Staff = (mongoose.models.Staff || mongoose.model('Staff', StaffSchema)) as mongoose.Model<any>;
 export default Staff;

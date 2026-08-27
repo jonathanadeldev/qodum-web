@@ -45,7 +45,7 @@ export const installmentsSesssionTransfer = async ({next_session}:any) => {
 
 
         // Records
-        await Installment.updateMany({session:next_session});
+        // TODO: transfer
 
 
         // Return

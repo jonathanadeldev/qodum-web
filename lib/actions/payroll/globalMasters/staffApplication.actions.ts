@@ -415,7 +415,7 @@ export const applyStaffForAdmission = async ({reg_nos}:ApplyStaffForAdmissionPro
 
         // Update staff
         reg_nos.map(async no => {
-            const updatedStaff = await StaffApplication.updateMany({'staff_registration.reg_no':no, session:activeSession?.year_name}, {is_up_for_admission:true}, {new:true});
+            const updatedStaff = await StaffApplication.updateMany({'staff_registration.reg_no':no, session:activeSession?.year_name}, {is_up_for_admission:true});
             return updatedStaff;
         });
     

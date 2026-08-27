@@ -46,7 +46,7 @@ export const sectionsSesssionTransfer = async ({next_session}:any) => {
 
 
         // Records
-        await Section.updateMany({session:next_session});
+        await Section.updateMany({}, {session:next_session});
 
 
         // Return

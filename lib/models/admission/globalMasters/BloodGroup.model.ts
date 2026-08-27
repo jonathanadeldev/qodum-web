@@ -21,5 +21,5 @@ const BloodGroupSchema = new mongoose.Schema(
 
 
 // Export
-const BloodGroup = mongoose.models.BloodGroup || mongoose.model('BloodGroup', BloodGroupSchema);
+const BloodGroup = (mongoose.models.BloodGroup || mongoose.model('BloodGroup', BloodGroupSchema)) as mongoose.Model<any>;
 export default BloodGroup;

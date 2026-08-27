@@ -22,5 +22,5 @@ const HealthUnitSchema = new mongoose.Schema(
 
 
 // Export
-const HealthUnit = mongoose.models.HealthUnit || mongoose.model('HealthUnit', HealthUnitSchema);
+const HealthUnit = (mongoose.models.HealthUnit || mongoose.model('HealthUnit', HealthUnitSchema)) as mongoose.Model<any>;
 export default HealthUnit;

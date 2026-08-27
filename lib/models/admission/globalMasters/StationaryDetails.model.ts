@@ -25,5 +25,5 @@ const StationaryDetailsSchema = new mongoose.Schema(
 
 
 // Export
-const StationaryDetails = mongoose.models.StationaryDetails || mongoose.model('StationaryDetails', StationaryDetailsSchema);
+const StationaryDetails = (mongoose.models.StationaryDetails || mongoose.model('StationaryDetails', StationaryDetailsSchema)) as mongoose.Model<any>;
 export default StationaryDetails;

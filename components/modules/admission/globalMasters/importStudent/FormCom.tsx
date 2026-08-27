@@ -1,6 +1,5 @@
 'use client';
 // Imports
-import * as XLSX from 'xlsx';
 import {Label} from '@/components/ui/label';
 import {Input} from '@/components/ui/input';
 import {AuthContext} from '@/context/AuthContext';
@@ -61,24 +60,9 @@ const FormCom = ({}:any) => {
     const excelToJson = (file:any) => {
         return new Promise((resolve, reject) => {
             try{
-                const reader = new FileReader();
+               
+                // TODO: update the excel to json logic
 
-                reader.onload = (e:any) => {
-                const data = new Uint8Array(e.target.result);
-                const workbook = XLSX.read(data, { type: 'array' });
-
-                const jsonData = {};
-
-                workbook.SheetNames.forEach((sheetName) => {
-                    const worksheet = workbook.Sheets[sheetName];
-                    const sheetData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-                    jsonData[sheetName] = sheetData;
-                });
-        
-                resolve(jsonData);
-                };
-        
-                reader.readAsArrayBuffer(file);
             }catch (error){
                 reject(error);
             };

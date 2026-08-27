@@ -54,5 +54,5 @@ const ProspectusSchema = new mongoose.Schema(
 
 
 // Export
-const Prospectus = mongoose.models.Prospectus || mongoose.model('Prospectus', ProspectusSchema);
+const Prospectus = (mongoose.models.Prospectus || mongoose.model('Prospectus', ProspectusSchema)) as mongoose.Model<any>;
 export default Prospectus;

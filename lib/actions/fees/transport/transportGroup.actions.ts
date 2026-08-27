@@ -45,7 +45,7 @@ export const transportGroupsSesssionTransfer = async ({next_session}:any) => {
 
 
         // Records
-        await TransportGroup.updateMany({session:next_session});
+        await TransportGroup.updateMany({}, {session:next_session});
 
 
         // Return

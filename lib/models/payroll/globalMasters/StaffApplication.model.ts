@@ -80,5 +80,5 @@ const StaffApplicationSchema = new mongoose.Schema(
 
 
 // Export
-const StaffApplication = mongoose.models.StaffApplication || mongoose.model('StaffApplication', StaffApplicationSchema);
+const StaffApplication = (mongoose.models.StaffApplication || mongoose.model('StaffApplication', StaffApplicationSchema)) as mongoose.Model<any>;
 export default StaffApplication;

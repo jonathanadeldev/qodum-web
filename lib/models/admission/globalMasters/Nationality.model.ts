@@ -21,5 +21,5 @@ const NationalitySchema = new mongoose.Schema(
 
 
 // Export
-const Nationality = mongoose.models.Nationality || mongoose.model('Nationality', NationalitySchema);
+const Nationality = (mongoose.models.Nationality || mongoose.model('Nationality', NationalitySchema)) as mongoose.Model<any>;
 export default Nationality;

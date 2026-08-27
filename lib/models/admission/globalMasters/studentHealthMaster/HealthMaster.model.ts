@@ -22,5 +22,5 @@ const HealthMasterSchema = new mongoose.Schema(
 
 
 // Export
-const HealthMaster = mongoose.models.HealthMaster || mongoose.model('HealthMaster', HealthMasterSchema);
+const HealthMaster = (mongoose.models.HealthMaster || mongoose.model('HealthMaster', HealthMasterSchema)) as mongoose.Model<any>;
 export default HealthMaster;

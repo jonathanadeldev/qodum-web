@@ -21,5 +21,5 @@ const ClubSchema = new mongoose.Schema(
 
 
 // Export
-const Club = mongoose.models.Club || mongoose.model('Club', ClubSchema);
+const Club = (mongoose.models.Club || mongoose.model('Club', ClubSchema)) as mongoose.Model<any>;
 export default Club;

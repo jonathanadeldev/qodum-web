@@ -23,5 +23,5 @@ const GroupSchema = new mongoose.Schema(
 
 
 // Export
-const Group = mongoose.models.Group || mongoose.model('Group', GroupSchema);
+const Group = (mongoose.models.Group || mongoose.model('Group', GroupSchema)) as mongoose.Model<any>;
 export default Group;

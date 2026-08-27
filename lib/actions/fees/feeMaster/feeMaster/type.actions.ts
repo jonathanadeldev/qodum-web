@@ -46,7 +46,7 @@ export const typesSesssionTransfer = async ({next_session}:any) => {
 
 
         // Records
-        await FeeType.updateMany({session:next_session});
+        await FeeType.updateMany({}, {session:next_session});
 
 
         // Return

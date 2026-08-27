@@ -21,5 +21,5 @@ const ProfessionSchema = new mongoose.Schema(
 
 
 // Export
-const Profession = mongoose.models.Profession || mongoose.model('Profession', ProfessionSchema);
+const Profession = (mongoose.models.Profession || mongoose.model('Profession', ProfessionSchema)) as mongoose.Model<any>;
 export default Profession;

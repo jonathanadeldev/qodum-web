@@ -29,5 +29,5 @@ const GeneralLedgerSchema = new mongoose.Schema(
 
 
 // Export
-const GeneralLedger = mongoose.models.GeneralLedger || mongoose.model('GeneralLedger', GeneralLedgerSchema);
+const GeneralLedger = (mongoose.models.GeneralLedger || mongoose.model('GeneralLedger', GeneralLedgerSchema)) as mongoose.Model<any>;
 export default GeneralLedger;

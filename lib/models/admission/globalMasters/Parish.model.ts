@@ -22,5 +22,5 @@ const ParishSchema = new mongoose.Schema(
 
 
 // Export
-const Parish = mongoose.models.Parish || mongoose.model('Parish', ParishSchema);
+const Parish = (mongoose.models.Parish || mongoose.model('Parish', ParishSchema)) as mongoose.Model<any>;
 export default Parish;

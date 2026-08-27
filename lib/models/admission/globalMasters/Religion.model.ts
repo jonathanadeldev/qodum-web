@@ -21,5 +21,5 @@ const ReligionSchema = new mongoose.Schema(
 
 
 // Export
-const Religion = mongoose.models.Religion || mongoose.model('Religion', ReligionSchema);
+const Religion = (mongoose.models.Religion || mongoose.model('Religion', ReligionSchema)) as mongoose.Model<any>;
 export default Religion;

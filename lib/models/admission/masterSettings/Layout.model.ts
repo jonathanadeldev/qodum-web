@@ -80,5 +80,5 @@ const LayoutSchema = new mongoose.Schema(
 
 
 // Export
-const Layout = mongoose.models.Layout || mongoose.model('Layout', LayoutSchema);
+const Layout = (mongoose.models.Layout || mongoose.model('Layout', LayoutSchema)) as mongoose.Model<any>;
 export default Layout;

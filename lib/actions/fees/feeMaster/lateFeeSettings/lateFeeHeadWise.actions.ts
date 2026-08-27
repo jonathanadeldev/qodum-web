@@ -45,7 +45,7 @@ export const lateFeeHeadWiseSesssionTransfer = async ({next_session}:any) => {
 
 
         // Records
-        await LateFeeHeadWise.updateMany({session:next_session});
+        await LateFeeHeadWise.updateMany({}, {session:next_session});
 
 
         // Return

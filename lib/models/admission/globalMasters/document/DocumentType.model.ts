@@ -21,5 +21,5 @@ const DocumentTypeSchema = new mongoose.Schema(
 
 
 // Export
-const DocumentType = mongoose.models.DocumentType || mongoose.model('DocumentType', DocumentTypeSchema);
+const DocumentType = (mongoose.models.DocumentType || mongoose.model('DocumentType', DocumentTypeSchema)) as mongoose.Model<any>;
 export default DocumentType;

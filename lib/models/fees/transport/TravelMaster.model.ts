@@ -23,5 +23,5 @@ const TravelMasterSchema = new mongoose.Schema(
 
 
 // Export
-const TravelMaster = mongoose.models.TravelMaster || mongoose.model('TravelMaster', TravelMasterSchema);
+const TravelMaster = (mongoose.models.TravelMaster || mongoose.model('TravelMaster', TravelMasterSchema)) as mongoose.Model<any>;
 export default TravelMaster;

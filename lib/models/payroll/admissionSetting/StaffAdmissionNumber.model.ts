@@ -26,5 +26,5 @@ const StaffAdmissionNumberSchema = new mongoose.Schema(
 
 
 // Export
-const StaffAdmissionNumber = mongoose.models.StaffAdmissionNumber || mongoose.model('StaffAdmissionNumber', StaffAdmissionNumberSchema);
+const StaffAdmissionNumber = (mongoose.models.StaffAdmissionNumber || mongoose.model('StaffAdmissionNumber', StaffAdmissionNumberSchema)) as mongoose.Model<any>;
 export default StaffAdmissionNumber;

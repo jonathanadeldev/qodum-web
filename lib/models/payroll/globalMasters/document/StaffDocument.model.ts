@@ -22,5 +22,5 @@ const staffDocumentSchema = new mongoose.Schema(
 
 
 // Export
-const StaffDocument = mongoose.models.StaffDocument || mongoose.model('StaffDocument', staffDocumentSchema);
+const StaffDocument = (mongoose.models.StaffDocument || mongoose.model('StaffDocument', staffDocumentSchema)) as mongoose.Model<any>;
 export default StaffDocument;

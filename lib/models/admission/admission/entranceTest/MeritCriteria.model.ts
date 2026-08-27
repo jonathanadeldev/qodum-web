@@ -22,5 +22,5 @@ const MeritCriteriaSchema = new mongoose.Schema(
 
 
 // Export
-const MeritCriteria = mongoose.models.MeritCriteria || mongoose.model('MeritCriteria', MeritCriteriaSchema);
+const MeritCriteria = (mongoose.models.MeritCriteria || mongoose.model('MeritCriteria', MeritCriteriaSchema)) as mongoose.Model<any>;
 export default MeritCriteria;

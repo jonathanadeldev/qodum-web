@@ -21,5 +21,5 @@ const AdmissionGuidlineSchema = new mongoose.Schema(
 
 
 // Export
-const AdmissionGuideline = mongoose.models.AdmissionGuideline || mongoose.model('AdmissionGuideline', AdmissionGuidlineSchema);
+const AdmissionGuideline = (mongoose.models.AdmissionGuideline || mongoose.model('AdmissionGuideline', AdmissionGuidlineSchema)) as mongoose.Model<any>;
 export default AdmissionGuideline;

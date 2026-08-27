@@ -21,5 +21,5 @@ const TransportMediumSchema = new mongoose.Schema(
 
 
 // Export
-const TransportMedium = mongoose.models.TransportMedium || mongoose.model('TransportMedium', TransportMediumSchema);
+const TransportMedium = (mongoose.models.TransportMedium || mongoose.model('TransportMedium', TransportMediumSchema)) as mongoose.Model<any>;
 export default TransportMedium;

@@ -45,7 +45,7 @@ export const concessionsSesssionTransfer = async ({next_session}:any) => {
 
 
         // Records
-        await Concession.updateMany({session:next_session});
+        // TODO: transfer logic
 
 
         // Return

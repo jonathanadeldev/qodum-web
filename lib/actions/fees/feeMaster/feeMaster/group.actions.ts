@@ -55,7 +55,7 @@ export const groupsSesssionTransfer = async ({next_session}:any) => {
 
 
         // Records
-        await Group.updateMany({session:next_session});
+        // TODO: transfer
 
 
         // Return

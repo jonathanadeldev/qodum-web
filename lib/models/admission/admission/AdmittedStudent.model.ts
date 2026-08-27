@@ -227,5 +227,5 @@ const AdmittedStudentSchema = new mongoose.Schema(
 
 
 // Export
-const AdmittedStudent = mongoose.models.AdmittedStudent || mongoose.model('AdmittedStudent', AdmittedStudentSchema);
+const AdmittedStudent = (mongoose.models.AdmittedStudent || mongoose.model('AdmittedStudent', AdmittedStudentSchema)) as mongoose.Model<any>;
 export default AdmittedStudent;

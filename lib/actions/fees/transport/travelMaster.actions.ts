@@ -45,7 +45,7 @@ export const travelMasterSesssionTransfer = async ({next_session}:any) => {
 
 
         // Records
-        await TravelMaster.updateMany({session:next_session});
+        await TravelMaster.updateMany({}, {session:next_session});
 
 
         // Return
