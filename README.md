@@ -25,7 +25,7 @@ Built to replace scattered spreadsheets and manual processes with one system tha
 
 ## 📖 Overview
 
-Qodum is a modular ERP system for schools, built around how a school actually operates rather than as a generic admin template. It's live, in active use, and reflects **600+ commits** of continuous, real-world iteration — not a one-off build.
+Qodum is a modular ERP system for schools, built around how a school actually operates rather than as a generic admin template.
 
 Instead of one monolithic dashboard, Qodum is split into independent, role-aware modules — each with its own data models, server actions, and UI — that share a single authentication and permissions layer.
 
@@ -164,7 +164,7 @@ Visit `http://localhost:3000`.
 
 ## 📌 Project Status
 
-Qodum is in **active, ongoing development** and is deployed live for real use by a school managing its day-to-day operations across fees, admissions, accounts, and inventory. Modules are added and refined incrementally rather than shipped as a single fixed release.
+Qodum is in **active, ongoing development**
 
 ---
 
