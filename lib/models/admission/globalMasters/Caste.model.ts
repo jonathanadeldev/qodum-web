@@ -21,5 +21,5 @@ const CasteSchema = new mongoose.Schema(
 
 
 // Export
-const Caste = mongoose.models.Caste || mongoose.model('Caste', CasteSchema);
+const Caste = (mongoose.models.Caste || mongoose.model('Caste', CasteSchema)) as mongoose.Model<any>;
 export default Caste;

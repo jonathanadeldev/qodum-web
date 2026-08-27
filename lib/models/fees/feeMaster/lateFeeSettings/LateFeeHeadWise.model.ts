@@ -27,5 +27,5 @@ const LateFeeHeadWiseSchema = new mongoose.Schema(
 
 
 // Export
-const LateFeeHeadWise = mongoose.models.LateFeeHeadWise || mongoose.model('LateFeeHeadWise', LateFeeHeadWiseSchema);
+const LateFeeHeadWise = (mongoose.models.LateFeeHeadWise || mongoose.model('LateFeeHeadWise', LateFeeHeadWiseSchema)) as mongoose.Model<any>;
 export default LateFeeHeadWise;

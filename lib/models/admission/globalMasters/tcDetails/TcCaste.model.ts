@@ -21,5 +21,5 @@ const TcCasteSchema = new mongoose.Schema(
 
 
 // Export
-const TcCaste = mongoose.models.TcCaste || mongoose.model('TcCaste', TcCasteSchema);
+const TcCaste = (mongoose.models.TcCaste || mongoose.model('TcCaste', TcCasteSchema)) as mongoose.Model<any>;
 export default TcCaste;

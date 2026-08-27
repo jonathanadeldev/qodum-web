@@ -45,7 +45,7 @@ export const dueLimitsSesssionTransfer = async ({next_session}:any) => {
 
 
         // Records
-        await DueLimit.updateMany({session:next_session});
+        await DueLimit.updateMany({}, {session:next_session});
 
 
         // Return

@@ -21,5 +21,5 @@ const OptionalSubjectSchema = new mongoose.Schema(
 
 
 // Export
-const OptionalSubject = mongoose.models.OptionalSubject || mongoose.model('OptionalSubject', OptionalSubjectSchema);
+const OptionalSubject = (mongoose.models.OptionalSubject || mongoose.model('OptionalSubject', OptionalSubjectSchema)) as mongoose.Model<any>;
 export default OptionalSubject;

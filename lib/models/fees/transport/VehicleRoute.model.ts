@@ -24,5 +24,5 @@ const VehicleRouteSchema = new mongoose.Schema(
 
 
 // Export
-const VehicleRoute = mongoose.models.VehicleRoute || mongoose.model('VehicleRoute', VehicleRouteSchema);
+const VehicleRoute = (mongoose.models.VehicleRoute || mongoose.model('VehicleRoute', VehicleRouteSchema)) as mongoose.Model<any>;
 export default VehicleRoute;

@@ -30,5 +30,5 @@ const AdmissionSchema = new mongoose.Schema(
 
 
 // Export
-const Admission = mongoose.models.Admission || mongoose.model('Admission', AdmissionSchema);
+const Admission = (mongoose.models.Admission || mongoose.model('Admission', AdmissionSchema)) as mongoose.Model<any>;
 export default Admission;

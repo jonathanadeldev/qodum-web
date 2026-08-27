@@ -52,5 +52,5 @@ const SchoolGlobalDetailsSchema = new mongoose.Schema(
 
 
 // Export
-const SchoolGlobalDetails = mongoose.models.SchoolGlobalDetails || mongoose.model('SchoolGlobalDetails', SchoolGlobalDetailsSchema);
+const SchoolGlobalDetails = (mongoose.models.SchoolGlobalDetails || mongoose.model('SchoolGlobalDetails', SchoolGlobalDetailsSchema)) as mongoose.Model<any>;
 export default SchoolGlobalDetails;

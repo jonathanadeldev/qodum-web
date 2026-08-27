@@ -10,7 +10,6 @@ import {GlobalStateProvider} from '@/context/GlobalStateContext';
 
 
 
-
 // Configs
 export const metadata: Metadata = {
   title:'Qodum',
@@ -43,4 +42,4 @@ export default function RootLayout({children}:{children:React.ReactNode}) {
       </body>
     </html>
   );
-};
+}

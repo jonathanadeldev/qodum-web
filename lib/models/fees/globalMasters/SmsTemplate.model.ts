@@ -23,5 +23,5 @@ const SmsTemplateSchema = new mongoose.Schema(
 
 
 // Export
-const SmsTemplate = mongoose.models.SmsTemplate || mongoose.model('SmsTemplate', SmsTemplateSchema);
+const SmsTemplate = (mongoose.models.SmsTemplate || mongoose.model('SmsTemplate', SmsTemplateSchema)) as mongoose.Model<any>;
 export default SmsTemplate;

@@ -71,5 +71,5 @@ const AdmissionStateSchema = new mongoose.Schema(
 
 
 // Export
-const AdmissionState = mongoose.models.AdmissionState || mongoose.model('AdmissionState', AdmissionStateSchema);
+const AdmissionState = (mongoose.models.AdmissionState || mongoose.model('AdmissionState', AdmissionStateSchema)) as mongoose.Model<any>;
 export default AdmissionState;

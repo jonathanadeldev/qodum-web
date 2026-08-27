@@ -43,5 +43,5 @@ const VehicleDetailsSchema = new mongoose.Schema(
 
 
 // Export
-const VehicleDetails = mongoose.models.VehicleDetails || mongoose.model('VehicleDetails', VehicleDetailsSchema);
+const VehicleDetails = (mongoose.models.VehicleDetails || mongoose.model('VehicleDetails', VehicleDetailsSchema)) as mongoose.Model<any>;
 export default VehicleDetails;

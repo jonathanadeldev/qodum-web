@@ -28,5 +28,5 @@ const HeadSchema = new mongoose.Schema(
 
 
 // Export
-const Head = mongoose.models.Head || mongoose.model('Head', HeadSchema);
+const Head = (mongoose.models.Head || mongoose.model('Head', HeadSchema)) as mongoose.Model<any>;
 export default Head;

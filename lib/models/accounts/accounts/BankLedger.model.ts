@@ -32,5 +32,5 @@ const BankLedgerSchema = new mongoose.Schema(
 
 
 // Export
-const BankLedger = mongoose.models.BankLedger || mongoose.model('BankLedger', BankLedgerSchema);
+const BankLedger = (mongoose.models.BankLedger || mongoose.model('BankLedger', BankLedgerSchema)) as mongoose.Model<any>;
 export default BankLedger;

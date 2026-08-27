@@ -28,5 +28,5 @@ const SlotSchema = new mongoose.Schema(
 
 
 // Export
-const Slot = mongoose.models.Slot || mongoose.model('Slot', SlotSchema);
+const Slot = (mongoose.models.Slot || mongoose.model('Slot', SlotSchema)) as mongoose.Model<any>;
 export default Slot;

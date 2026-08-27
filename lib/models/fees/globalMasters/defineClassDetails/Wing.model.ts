@@ -21,5 +21,5 @@ const WingSchema = new mongoose.Schema(
 
 
 // Export
-const Wing = mongoose.models.Wing || mongoose.model('Wing', WingSchema);
+const Wing = (mongoose.models.Wing || mongoose.model('Wing', WingSchema)) as mongoose.Model<any>;
 export default Wing;

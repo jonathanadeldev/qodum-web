@@ -27,5 +27,5 @@ const DueLimitSchema = new mongoose.Schema(
 
 
 // Export
-const DueLimit = mongoose.models.DueLimit || mongoose.model('DueLimit', DueLimitSchema);
+const DueLimit = (mongoose.models.DueLimit || mongoose.model('DueLimit', DueLimitSchema)) as mongoose.Model<any>;
 export default DueLimit;

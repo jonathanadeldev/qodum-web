@@ -34,5 +34,5 @@ const InstallmentSchema = new mongoose.Schema(
 
 
 // Export
-const Installment = mongoose.models.Installment || mongoose.model('Installment', InstallmentSchema);
+const Installment = (mongoose.models.Installment || mongoose.model('Installment', InstallmentSchema)) as mongoose.Model<any>;
 export default Installment;

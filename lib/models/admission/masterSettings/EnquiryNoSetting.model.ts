@@ -25,5 +25,5 @@ const EnquiryNoSettingSchema = new mongoose.Schema(
 
 
 // Export
-const EnquiryNoSetting = mongoose.models.EnquiryNoSetting || mongoose.model('EnquiryNoSetting', EnquiryNoSettingSchema);
+const EnquiryNoSetting = (mongoose.models.EnquiryNoSetting || mongoose.model('EnquiryNoSetting', EnquiryNoSettingSchema)) as mongoose.Model<any>;
 export default EnquiryNoSetting;

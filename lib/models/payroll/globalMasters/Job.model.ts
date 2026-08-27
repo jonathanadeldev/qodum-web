@@ -27,5 +27,5 @@ const JobSchema = new mongoose.Schema(
 
 
 // Export
-const Job = mongoose.models.Job || mongoose.model('Job', JobSchema);
+const Job = (mongoose.models.Job || mongoose.model('Job', JobSchema)) as mongoose.Model<any>;
 export default Job;

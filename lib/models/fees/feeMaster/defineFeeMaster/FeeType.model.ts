@@ -23,5 +23,5 @@ const FeeTypeSchema = new mongoose.Schema(
 
 
 // Export
-const FeeType = mongoose.models.FeeType || mongoose.model('FeeType', FeeTypeSchema);
+const FeeType = (mongoose.models.FeeType || mongoose.model('FeeType', FeeTypeSchema)) as mongoose.Model<any>;
 export default FeeType;

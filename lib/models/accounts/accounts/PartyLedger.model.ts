@@ -35,5 +35,5 @@ const PartyLedgerSchema = new mongoose.Schema(
 
 
 // Export
-const PartyLedger = mongoose.models.PartyLedger || mongoose.model('PartyLedger', PartyLedgerSchema);
+const PartyLedger = (mongoose.models.PartyLedger || mongoose.model('PartyLedger', PartyLedgerSchema)) as mongoose.Model<any>;
 export default PartyLedger;

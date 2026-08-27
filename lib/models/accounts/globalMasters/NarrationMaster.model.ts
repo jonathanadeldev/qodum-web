@@ -22,5 +22,5 @@ const NarrationMasterSchema = new mongoose.Schema(
 
 
 // Export
-const NarrationMaster = mongoose.models.NarrationMaster || mongoose.model('NarrationMaster', NarrationMasterSchema);
+const NarrationMaster = (mongoose.models.NarrationMaster || mongoose.model('NarrationMaster', NarrationMasterSchema)) as mongoose.Model<any>;
 export default NarrationMaster;

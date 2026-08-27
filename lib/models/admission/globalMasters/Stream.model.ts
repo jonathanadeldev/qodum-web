@@ -21,5 +21,5 @@ const StreamSchema = new mongoose.Schema(
 
 
 // Export
-const Stream = mongoose.models.Stream || mongoose.model('Stream', StreamSchema);
+const Stream = (mongoose.models.Stream || mongoose.model('Stream', StreamSchema)) as mongoose.Model<any>;
 export default Stream;

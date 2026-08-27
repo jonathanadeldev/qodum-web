@@ -45,7 +45,7 @@ export const vehicleTypesSesssionTransfer = async ({next_session}:any) => {
 
 
         // Records
-        await VehicleType.updateMany({session:next_session});
+        await VehicleType.updateMany({}, {session:next_session});
 
 
         // Return

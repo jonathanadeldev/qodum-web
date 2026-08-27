@@ -31,5 +31,5 @@ const FinancialYearSchema = new mongoose.Schema(
 
 
 // Export
-const FinancialYear = mongoose.models.FinancialYear || mongoose.model('FinancialYear', FinancialYearSchema);
+const FinancialYear = (mongoose.models.FinancialYear || mongoose.model('FinancialYear', FinancialYearSchema)) as mongoose.Model<any>;
 export default FinancialYear;

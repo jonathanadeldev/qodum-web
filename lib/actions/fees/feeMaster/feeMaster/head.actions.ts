@@ -47,7 +47,7 @@ export const headsSesssionTransfer = async ({next_session}:any) => {
 
 
         // Records
-        await Head.updateMany({session:next_session});
+        // TODO: transfer
 
 
         // Return

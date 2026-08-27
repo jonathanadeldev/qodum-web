@@ -25,5 +25,5 @@ const TransportGroupSchema = new mongoose.Schema(
 
 
 // Export
-const TransportGroup = mongoose.models.TransportGroup || mongoose.model('TransportGroup', TransportGroupSchema);
+const TransportGroup = (mongoose.models.TransportGroup || mongoose.model('TransportGroup', TransportGroupSchema)) as mongoose.Model<any>;
 export default TransportGroup;

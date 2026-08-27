@@ -71,5 +71,5 @@ const PaymentSchema = new mongoose.Schema(
 
 
 // Export
-const Payment = mongoose.models.Payment || mongoose.model('Payment', PaymentSchema);
+const Payment = (mongoose.models.Payment || mongoose.model('Payment', PaymentSchema)) as mongoose.Model<any>;
 export default Payment;

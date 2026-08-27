@@ -21,5 +21,5 @@ const CadetTypeSchema = new mongoose.Schema(
 
 
 // Export
-const CadetType = mongoose.models.CadetType || mongoose.model('CadetType', CadetTypeSchema);
+const CadetType = (mongoose.models.CadetType || mongoose.model('CadetType', CadetTypeSchema)) as mongoose.Model<any>;
 export default CadetType;

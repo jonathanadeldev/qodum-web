@@ -47,5 +47,5 @@ const RouteStopSchema = new mongoose.Schema(
 
 
 // Export
-const RouteStop = mongoose.models.RouteStop || mongoose.model('RouteStop', RouteStopSchema);
+const RouteStop = (mongoose.models.RouteStop || mongoose.model('RouteStop', RouteStopSchema)) as mongoose.Model<any>;
 export default RouteStop;

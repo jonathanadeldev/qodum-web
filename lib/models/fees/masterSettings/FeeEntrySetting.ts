@@ -24,5 +24,5 @@ const FeeEntrySettingSchema = new mongoose.Schema(
 
 
 // Export
-const FeeEntrySetting = mongoose.models.FeeEntrySetting || mongoose.model('FeeEntrySetting', FeeEntrySettingSchema);
+const FeeEntrySetting = (mongoose.models.FeeEntrySetting || mongoose.model('FeeEntrySetting', FeeEntrySettingSchema)) as mongoose.Model<any>;
 export default FeeEntrySetting;

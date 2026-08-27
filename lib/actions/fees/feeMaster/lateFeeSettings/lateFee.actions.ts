@@ -48,7 +48,7 @@ export const lateFeeSesssionTransfer = async ({next_session}:any) => {
 
 
         // Records
-        await LateFee.updateMany({session:next_session});
+        await LateFee.updateMany({}, {session:next_session});
 
 
         // Return

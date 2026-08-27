@@ -21,5 +21,5 @@ const RemarkSchema = new mongoose.Schema(
 
 
 // Export
-const Remark = mongoose.models.Remark || mongoose.model('Remark', RemarkSchema);
+const Remark = (mongoose.models.Remark || mongoose.model('Remark', RemarkSchema)) as mongoose.Model<any>;
 export default Remark;

@@ -199,5 +199,5 @@ const StudentSchema = new mongoose.Schema(
 
 
 // Export
-const Student = mongoose.models.Student || mongoose.model('Student', StudentSchema);
+const Student = (mongoose.models.Student || mongoose.model('Student', StudentSchema)) as mongoose.Model<any>;
 export default Student;

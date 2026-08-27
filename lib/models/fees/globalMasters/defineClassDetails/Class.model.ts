@@ -33,5 +33,5 @@ const ClassSchema = new mongoose.Schema(
 
 
 // Export
-const Class = mongoose.models.Class || mongoose.model('Class', ClassSchema);
+const Class = (mongoose.models.Class || mongoose.model('Class', ClassSchema)) as mongoose.Model<any>;
 export default Class;

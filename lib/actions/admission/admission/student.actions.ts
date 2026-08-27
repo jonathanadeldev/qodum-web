@@ -646,7 +646,10 @@ export const applyStudentForAdmission = async ({reg_nos}:ApplyStudentForAdmissio
 
         // Update student
         reg_nos.map(async no => {
-            const updatedStudents = await Student.updateMany({'student.reg_no':no, session:activeSession?.year_name}, {'student.is_up_for_admission':true}, {new:true});
+            const updatedStudents = await Student.updateMany(
+                {'student.reg_no':no, session:activeSession?.year_name},
+                {'student.is_up_for_admission':true}
+            );
             return updatedStudents;
         });
     

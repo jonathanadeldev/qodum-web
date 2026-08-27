@@ -21,5 +21,5 @@ const HouseSchema = new mongoose.Schema(
 
 
 // Export
-const House = mongoose.models.House || mongoose.model('House', HouseSchema);
+const House = (mongoose.models.House || mongoose.model('House', HouseSchema)) as mongoose.Model<any>;
 export default House;

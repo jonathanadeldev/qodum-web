@@ -21,5 +21,5 @@ const ConcessionSchema = new mongoose.Schema(
 
 
 // Export
-const Concession = mongoose.models.Concession || mongoose.model('Concession', ConcessionSchema);
+const Concession = (mongoose.models.Concession || mongoose.model('Concession', ConcessionSchema)) as mongoose.Model<any>;
 export default Concession;

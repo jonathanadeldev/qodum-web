@@ -24,5 +24,5 @@ const AccountGroupSchema = new mongoose.Schema(
 
 
 // Export
-const AccountGroup = mongoose.models.AccountGroup || mongoose.model('AccountGroup', AccountGroupSchema);
+const AccountGroup = (mongoose.models.AccountGroup || mongoose.model('AccountGroup', AccountGroupSchema)) as mongoose.Model<any>;
 export default AccountGroup;

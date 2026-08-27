@@ -45,7 +45,7 @@ export const routeStopsSesssionTransfer = async ({next_session}:any) => {
 
 
         // Records
-        await RouteStop.updateMany({session:next_session});
+        await RouteStop.updateMany({}, {session:next_session});
 
 
         // Return
