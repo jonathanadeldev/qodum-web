@@ -1,10 +1,9 @@
 'use client';
 // Imports
 import Image from 'next/image';
-import {redirect} from 'next/navigation';
+import {redirect, useRouter} from 'next/navigation';
 import {Input} from '@/components/ui/input';
 import QodumLogo from '@/public/assets/logo.png';
-import {AuthContext} from '@/context/AuthContext';
 import {useToast} from '@/components/ui/use-toast';
 import {useContext, useEffect, useState} from 'react';
 import WelcomeImage from '@/public/assets/auth img.svg';
@@ -13,6 +12,7 @@ import {Lock, LogIn, PersonStanding, User} from 'lucide-react';
 import {createUser, loginUser} from '@/lib/actions/users/manageUsers/user.actions';
 import { createAdmissionStates, fetchAdmissionStates } from '@/lib/actions/payroll/globalMasters/admissionStates.actions';
 import { fetchAcademicYears } from '@/lib/actions/accounts/globalMasters/defineSession/defineAcademicYear.actions';
+import { AuthContext } from '@/context/AuthContext';
 
 
 
@@ -21,12 +21,16 @@ import { fetchAcademicYears } from '@/lib/actions/accounts/globalMasters/defineS
 // Sign in
 const SignIn = () => {
 
-    // Login user check
-    const {user, login} = useContext(AuthContext);
-
-
     // Toast
     const {toast} = useToast();
+
+
+    // Router
+    const router = useRouter();
+
+
+    // Login user check
+    const {login} = useContext(AuthContext);
 
 
     // Is loading
@@ -83,8 +87,7 @@ const SignIn = () => {
         //     is_active:true,
         //     enable_otp:true
         // });
-        const academicYears = await fetchAcademicYears();
-        console.log(academicYears);
+        // const academicYears = await fetchAcademicYears();
 
 
         // Create admission states
@@ -106,14 +109,29 @@ const SignIn = () => {
 
 
         // User login
-        const res = await loginUser({user_name:username, password});
-        if(!res.success){
-            toast({title:res.message, variant:'error'});
-            setIsLoading(false);
-            return;
-        };
-        login(res.user);
+        const res = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password }),
+        })
+
+        const data = await res.json()
+
+        login(data);
+
+        if (!res.ok) {
+            if (data.error && typeof data.error === 'object') {
+                Object.entries(data.error).forEach(([field, messages]) => {
+                    // error
+                })
+            } else {
+                toast({title:'Something went wrong', variant:'error'})
+            }
+            return
+        }
         toast({title:'Logged in'});
+
+        router.push('/');
 
 
         // Set loading to true
@@ -123,9 +141,6 @@ const SignIn = () => {
 
 
     // Use effects
-    useEffect(() => {
-        if(user) redirect('/');
-    }, [isLoading]);
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrentBackground((prev) => (prev + 1) % backgrounds.length);

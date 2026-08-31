@@ -8,10 +8,8 @@ import Clock from 'react-live-clock';
 import {Toaster} from '../ui/toaster';
 import {LogOut} from 'lucide-react';
 import PagesList from './Pages/PagesList';
-import {AuthContext} from '@/context/AuthContext';
-import {useContext, useEffect, useState} from 'react';
-import {redirect, usePathname} from 'next/navigation';
-import {fetchActiveFinancialYear} from '@/lib/actions/accounts/globalMasters/defineSession/defineFinancialYear.actions';
+import {useEffect, useState} from 'react';
+import {usePathname} from 'next/navigation';
 import {fetchAcademicYearsForDashboard, modifyAcademicYearWithYearName} from '@/lib/actions/accounts/globalMasters/defineSession/defineAcademicYear.actions';
 
 
@@ -19,14 +17,10 @@ import {fetchAcademicYearsForDashboard, modifyAcademicYearWithYearName} from '@/
 
 
 // Main function
-const index = ({children}:any) => {
+const index = ({children, user }:any) => {
 
     // Setting moment local to english
     moment.locale('en-gb');
-
-
-    // User
-    const {user, logout} = useContext(AuthContext);
 
 
     // Today's Date
@@ -76,9 +70,6 @@ const index = ({children}:any) => {
         };
         academicYearsFetcher();
     }, []);
-    useEffect(() => {
-        if(!user) redirect('/sign-in');
-    }, [user]);
 
     return (
         <main className='w-full h-screen flex flex-row bg-[#ecedf0]'>
@@ -86,6 +77,7 @@ const index = ({children}:any) => {
                 <Sidebar
                     isSidebarOpened={isSidebarOpened}
                     setIsSidebarOpened={setIsSidebarOpened}
+                    user={user}
                 />
             )}
             <div className='relative flex flex-col flex-1 overflow-hidden'>
@@ -98,6 +90,7 @@ const index = ({children}:any) => {
                                 academicYears={academicYears}
                                 settingActiveAcademicYear={settingActiveAcademicYear}
                                 activeAcademicYearName={activeAcademicYearName}
+                                user={user}
                             />
                             <PagesList />
                         </>
@@ -124,7 +117,7 @@ const index = ({children}:any) => {
                                     <p className='text-xs text-hash-color'>{user?.mobile}</p>
                                     <p className='text-xs text-hash-color'>{user?.email}</p>
                                     <span
-                                        onClick={logout}
+                                        onClick={() => {/* Logout */}}
                                         className='flex justify-center items-center border-2 border-[#ccc] w-7 h-7 rounded-full cursor-pointer hover:scale-105 transition-transform'
                                     >
                                         <LogOut className='text-hash-color' size={15}/>

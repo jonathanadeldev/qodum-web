@@ -1,11 +1,10 @@
 // Imports
 import {Input} from '../../ui/input';
-import {AuthContext} from '@/context/AuthContext';
-import {useContext, useEffect, useState} from 'react';
+import {useEffect, useState} from 'react';
 import DropdownMenuCom from '../../utils/DropdownMenuCom';
 import {Select, SelectContent, SelectItem, SelectTrigger} from '@/components/ui/select';
 import {Scan, Grid3X3, Search, Globe, CalendarDays, Flag, Bell, ArrowLeft, Check, Shrink, LogOut} from 'lucide-react';
-import { redirect } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { fetchGlobalSchoolDetails } from '@/lib/actions/fees/globalMasters/defineSchool/schoolGlobalDetails.actions';
   
@@ -14,14 +13,14 @@ import { fetchGlobalSchoolDetails } from '@/lib/actions/fees/globalMasters/defin
 
 
 // Main function
-const Topbar = ({isSidebarOpened, setIsSidebarOpened, settingActiveAcademicYear, academicYears, activeAcademicYearName}:any) => {
-
-    // User
-    const {user, logout} = useContext(AuthContext);
-
+const Topbar = ({isSidebarOpened, setIsSidebarOpened, settingActiveAcademicYear, academicYears, activeAcademicYearName, user}:any) => {
 
     // School link
     const [schoolLink, setSchoolLink] = useState('');
+
+
+    // Router
+    const router = useRouter();
 
 
     // Full screen page handler
@@ -37,6 +36,16 @@ const Topbar = ({isSidebarOpened, setIsSidebarOpened, settingActiveAcademicYear,
     };
 
 
+    async function handleLogout() {
+        try {
+            const response = await fetch("/api/auth/logout", { method: "POST" })
+            if (!response.ok) throw new Error("Logout failed")
+            router.replace("/")
+            router.refresh()
+        } catch {
+
+        }
+    }
     // Use effects
     useEffect(() => {
         const fetcher = async () => {
@@ -50,9 +59,6 @@ const Topbar = ({isSidebarOpened, setIsSidebarOpened, settingActiveAcademicYear,
         document.addEventListener('fullscreenchange', onFullscreenChange);
         return () => document.removeEventListener('fullscreenchange', onFullscreenChange);
     }, []);
-    useEffect(() => {
-        if(!user) redirect('/sign-in');
-    }, [user, logout]);
 
     return (
         <nav className='flex flex-col items-center justify-between bg-white w-full border-b-[0.5px] border-[#ccc] px-4 py-2 lg:flex-row'>
@@ -197,7 +203,7 @@ const Topbar = ({isSidebarOpened, setIsSidebarOpened, settingActiveAcademicYear,
                         <p className='h-5 text-md text-semibold text-hash-color'>{user?.name}</p>
                         <p className='text-xs text-hash-color'>{user?.designation}</p>
                         <span
-                            onClick={logout}
+                            onClick={() => handleLogout()}
                             className='flex justify-center items-center border-2 border-[#ccc] w-7 h-7 rounded-full cursor-pointer hover:scale-105 transition-transform'
                         >
                             <LogOut className='text-hash-color' size={15}/>

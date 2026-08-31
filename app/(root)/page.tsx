@@ -1,19 +1,18 @@
-'use client';
 // Imports
-import {Suspense} from 'react';
 import RootPage from '@/components/Layout/RootPage';
-import LoadingIcon from '@/components/utils/LoadingIcon';
+import { getCurrentUser } from '@/lib/auth/session';
 
 
 
 
 
 // Main function
-const Home = () => {
+const Home = async () => {
+
+  const user = await getCurrentUser();
+
   return (
-    <Suspense fallback={<LoadingIcon />}>
-      <RootPage />
-    </Suspense>
+    <RootPage user={user} />
   );
 };
 

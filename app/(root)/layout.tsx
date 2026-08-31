@@ -4,8 +4,8 @@ import type {Metadata} from 'next';
 // @ts-ignore
 import {ABeeZee, Josefin_Sans} from 'next/font/google';
 import Layout from '@/components/Layout/index';
-import {AuthProvider} from '@/context/AuthContext';
 import {GlobalStateProvider} from '@/context/GlobalStateContext';
+import { getCurrentUser, clearAuthCookie } from '@/lib/auth/session';
 
 
 
@@ -29,16 +29,16 @@ const ABZ = ABeeZee({
 
 
 // Main function
-export default function RootLayout({children}:{children:React.ReactNode}) {
+export default async function RootLayout({children}:{children:React.ReactNode}) {
+
+  const user = await getCurrentUser();
+
   return (
     <html lang='en'>
       <body className={`${ABZ.className}`}>
-      {/* <body className={`${JS.className}`}> */}
-          <AuthProvider>
-            <GlobalStateProvider>
-              <Layout children={children} />
-            </GlobalStateProvider>
-          </AuthProvider>
+        <GlobalStateProvider>
+          <Layout children={children} user={user} />
+        </GlobalStateProvider>
       </body>
     </html>
   );
