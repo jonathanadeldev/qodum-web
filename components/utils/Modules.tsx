@@ -12,10 +12,11 @@ import {AuthContext} from '@/context/AuthContext';
 
 
 // Main functions
-const Modules = () => {
+const Modules = ({user}:any) => {
+    console.log(user);
 
     // User
-    const {user} = useContext(AuthContext);
+    // const {user} = useContext(AuthContext);
 
 
     // Permitted modules

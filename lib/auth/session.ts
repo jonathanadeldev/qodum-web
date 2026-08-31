@@ -4,7 +4,6 @@ import { verifyToken } from './jwt'
 import { JWTPayload } from 'jose'
 import User from '../models/users/manageUsers/User.model';
 
-
 const COOKIE_NAME = 'qodum_session'
 
 export type CurrentUser = {
@@ -64,7 +63,10 @@ export async function getCurrentUser(): Promise<CurrentUser | null> {
         const payload = await getUserFromCookie()
         if (!payload || typeof payload.userId !== 'string') return null
     
-        const user = await User.findById(payload.userId).select('-password -is_reset_password -schools -fee_types -createdAt -updatedAt -__v');
+        const user = await User
+            .findById(payload.userId)
+            .select('-password -is_reset_password -schools -fee_types -createdAt -updatedAt -__v')
+            .lean() as any;
     
         if (!user) return null
     
@@ -72,15 +74,15 @@ export async function getCurrentUser(): Promise<CurrentUser | null> {
             id: user._id.toString(),
             session: user.session,
             name: user.name,
-            username: user.username,
+            username: user.user_name,
             designation: user.designation,
             email: user.email,
             employee: user.employee,
             mobile: user.mobile,
-            profilePicture: user.profilePicture,
-            isActive: user.isActive,
+            profilePicture: user.profile_picture,
+            isActive: user.is_active,
             permissions: user.permissions,
-            isAdmin: user.isAdmin
+            isAdmin: user.is_admin
         }
 
     } catch (error) {

@@ -42,7 +42,7 @@ const DropdownMenuCom = () => {
             <DropdownMenuContent
                 className='bg-white rounded-[8px] w-[200px]'
             >
-                {modules.filter((module:any) => permittedModules.includes(module.title)).map((module:any) => (
+                {modules.filter((module:any) => permittedModules?.includes(module.title)).map((module:any) => (
                     <Link
                         href={`/${module.title.toLowerCase().replace(/\s+/g,"-")}`}
                         onClick={() => setOpenedPages([])}

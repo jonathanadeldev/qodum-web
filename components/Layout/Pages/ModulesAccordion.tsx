@@ -7,18 +7,13 @@ import {MoveRight, ChevronDown} from 'lucide-react';
 import {useContext, useEffect, useState} from 'react';
 import {GlobalStateContext} from '@/context/GlobalStateContext';
 import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from '@/components/ui/accordion';
-import { AuthContext } from '@/context/AuthContext';
 
 
 
 
 
 // Main function
-const ModulesAccordion = ({isSidebarOpened, setIsSidebarOpened}:any) => {
-
-    // User
-    const {user} = useContext(AuthContext);
-
+const ModulesAccordion = ({isSidebarOpened, setIsSidebarOpened, user}:any) => {
 
     // Router
     const pathname = usePathname();
@@ -118,13 +113,15 @@ const ModulesAccordion = ({isSidebarOpened, setIsSidebarOpened}:any) => {
                     >
                         <div className='flex flex-row w-full items-center gap-2 transition'>
                             <div className={`${!isSidebarOpened ? 'w-full' : 'w-auto'} flex justify-center`}>
-                                <Image
-                                    // @ts-ignore
-                                    src={currentModule.icon}
-                                    width={35}
-                                    height={35}
-                                    alt='Icon'
-                                />
+                                {currentModule.icon && (
+                                    <Image
+                                        // @ts-ignore
+                                        src={currentModule.icon}
+                                        width={35}
+                                        height={35}
+                                        alt='Icon'
+                                    />
+                                )}
                             </div>
                             <p
                                 className={`${isSidebarOpened ? 'block' : 'hidden'} text-[16px] text-bold`}

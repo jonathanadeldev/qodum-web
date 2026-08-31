@@ -21,5 +21,5 @@ const TermSchema = new mongoose.Schema(
 
 
 // Export
-const newTermMaster = (mongoose.models.newTermMaster || mongoose.model('Term', TermSchema)) as mongoose.Model<any>;
+const newTermMaster = (mongoose.models.Term || mongoose.model('Term', TermSchema)) as mongoose.Model<any>;
 export default newTermMaster;

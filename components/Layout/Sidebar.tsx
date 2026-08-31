@@ -12,7 +12,7 @@ import Link from 'next/link';
 
 
 // Main function
-const Sidebar = ({isSidebarOpened, setIsSidebarOpened}:any) => {
+const Sidebar = ({isSidebarOpened, setIsSidebarOpened, user}:any) => {
 
 
     // Pathname
@@ -55,11 +55,12 @@ const Sidebar = ({isSidebarOpened, setIsSidebarOpened}:any) => {
             {
                 pathname.split('/')[1].charAt(0).toUpperCase() + pathname.split('/')[1].slice(1) === ''
                 ? (
-                    <HomeSidebar />
+                    <HomeSidebar user={user} />
                 ) : (
                     <ModulesAccordion
                         isSidebarOpened={isSidebarOpened}
                         setIsSidebarOpened={setIsSidebarOpened}
+                        user={user}
                     />
                 )
             }
