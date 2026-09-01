@@ -1,24 +1,12 @@
-// Imports
-import RootPage from '@/components/Layout/RootPage';
+import HomePage from '@/components/home';
 import { getCurrentUser } from '@/lib/auth/session';
 
 
-
-
-
-// Main function
-const Home = async () => {
+export default async function Page () {
 
   const user = await getCurrentUser();
 
   return (
-    <RootPage user={user} />
+    <HomePage user={user} />
   );
 };
-
-
-
-
-
-// Export
-export default Home;

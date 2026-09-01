@@ -3,7 +3,6 @@
 import Image from 'next/image';
 import {X} from 'lucide-react';
 import {redirect, usePathname} from 'next/navigation';
-import HomeSidebar from './Home/HomeSidebar';
 import ModulesAccordion from './Pages/ModulesAccordion';
 import Link from 'next/link';
 
@@ -55,7 +54,7 @@ const Sidebar = ({isSidebarOpened, setIsSidebarOpened, user}:any) => {
             {
                 pathname.split('/')[1].charAt(0).toUpperCase() + pathname.split('/')[1].slice(1) === ''
                 ? (
-                    <HomeSidebar user={user} />
+                    ""
                 ) : (
                     <ModulesAccordion
                         isSidebarOpened={isSidebarOpened}

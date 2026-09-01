@@ -135,10 +135,7 @@ const index = ({children, user }:any) => {
                     ) : children}
                     <Toaster />
                 </div>
-                <Footer
-                    activeAcademicYearName={activeAcademicYearName}
-                    activeFinancialYear={activeFinancialYear}
-                />
+                <Footer />
             </div>
         </main>
     );
