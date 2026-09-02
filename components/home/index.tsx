@@ -33,7 +33,7 @@ export default function HomePage({ user }: any) {
                                 </p>
 
                                 <h1 className='text-[24px] font-bold tracking-[-0.4px] text-[#17233C] md:text-[28px]'>
-                                    Welcome back, {user?.name || 'Administrator'} 👋
+                                    Welcome back, {user?.name || 'Administrator'}
                                 </h1>
 
                                 <p className='mt-2 text-sm text-[#718096]'>

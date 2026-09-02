@@ -13,13 +13,14 @@ import CreateUser from '@/pagesComps/users/manageUsers/create-user/page';
 import UserPermission from '@/pagesComps/users/manageUsers/user-permission/page';
 import FeeTypeAssignToUser from '@/pagesComps/users/manageUsers/fee-type-assign-to-user/page';
 import { useSearchParams } from 'next/navigation';
+import { CurrentUser } from '@/lib/auth/session';
 
 
 
 
 
 // Main function
-const Home = () => {
+const Home = ({user}: {user: CurrentUser | null}) => {
 
   // Setting moment local to english
   moment.locale('en-gb');

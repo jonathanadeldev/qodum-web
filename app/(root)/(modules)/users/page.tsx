@@ -1,25 +1,12 @@
-'use client';
-// Imports
-import {Suspense} from 'react';
-import LoadingIcon from '@/components/utils/LoadingIcon';
 import Users from '@/components/Layout/pagesComponents/Users';
+import { getCurrentUser } from '@/lib/auth/session';
 
 
+export default async function Page () {
 
+  const user = await getCurrentUser();
 
-
-// Main function
-const Home = () => {
   return(
-    <Suspense fallback={<LoadingIcon />}>
-      <Users />
-    </Suspense>
+    <Users user={user}/>
   );
 };
-
-
-
-
-
-// Export
-export default Home;

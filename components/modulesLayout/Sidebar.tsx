@@ -1,229 +1,290 @@
 'use client';
-// Imports
+import { useState, useContext } from 'react';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
+import {
+    ChevronDown,
+    ChevronLeft,
+    ChevronRight,
+    MoveRight,
+} from 'lucide-react';
 import modules from '@/constants/modules';
-import {usePathname} from 'next/navigation';
-import {MoveRight, ChevronDown} from 'lucide-react';
-import {useContext, useEffect, useState} from 'react';
-import {GlobalStateContext} from '@/context/GlobalStateContext';
-import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from '@/components/ui/accordion';
+import { GlobalStateContext } from '@/context/GlobalStateContext';
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from '@/components/ui/accordion';
 
 
+
+// Types
+type Permission = {
+    sr_no?: number;
+    main_menu?: string;
+    sub_menu?: string;
+    add?: boolean;
+    modify?: boolean;
+    delete?: boolean;
+    print?: boolean;
+    read_only?: boolean;
+};
+type UserModulePermission = {
+    name?: string;
+    permissions?: Permission[];
+};
+
+
+
+// Helpers
+const hasPermission = (permission: Permission) => {
+    return (
+        permission?.add ||
+        permission?.modify ||
+        permission?.delete ||
+        permission?.print ||
+        permission?.read_only
+    );
+};
+const slugify = (value: string = '') => {
+    return value
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, '-')
+        .replace(/[^a-z0-9-]/g, '');
+};
+const formatRouteName = (value: string = '') => {
+    return value
+        .split('-')
+        .filter(Boolean)
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+};
 
 
 
 // Main function
-export default function Sidebar (user:any) {
+export default function Sidebar({ user }: { user?: any }) {
 
-    // Router
+    const [isCollapsed, setIsCollapsed] = useState(false);
     const pathname = usePathname();
 
+    const { openedPages, setOpenedPages, setCurrentPage } = useContext(GlobalStateContext);
 
-    const [isSidebarOpened, setIsSidebarOpened] = useState(false);
+    const moduleSlug = pathname.split('/')[1] || '';
+    const currentModule = modules.find((module: any) => slugify(module.moduleName) === moduleSlug);
 
+    const currentModulePermissions: Permission[] =
+        user?.permissions
+            ?.find((permissionModule: UserModulePermission) => permissionModule?.name === currentModule?.moduleName)
+            ?.permissions
+            ?.filter(hasPermission) || [];
 
-    // Opened pages
-    const {openedPages, setOpenedPages, setCurrentPage} = useContext(GlobalStateContext);
+    const permittedMainMenus = new Set(currentModulePermissions.map(permission => permission?.main_menu).filter(Boolean));
+    const permittedSubMenus = new Set(currentModulePermissions.map(permission => permission?.sub_menu).filter(Boolean));
 
+    const permittedPages = currentModule?.pages
+        ?.filter((page: any) => permittedMainMenus.has(page?.pageName))
+        ?.map((page: any) => {
+            const permittedSubPages =
+                page?.subPages
+                    ?.map((subPage: any) => {
+                        const subPageIsPermitted = permittedSubMenus.has(subPage?.subPageName);
+                        const permittedThreads = Array.isArray(subPage?.threads)
+                            ? subPage.threads.filter((thread: string) => permittedSubMenus.has(thread))
+                            : [];
 
-    // Currnet Module
-    const [currentModule, setCurrentModule] = useState<any>({});
+                        if (!subPageIsPermitted && permittedThreads.length === 0) {
+                            return null;
+                        }
 
+                        return {
+                            ...subPage,
+                            threads: Array.isArray(subPage?.threads)
+                                ? subPageIsPermitted ? subPage.threads : permittedThreads
+                                : undefined,
+                        };
+                    })
+                    .filter(Boolean) || [];
 
-    // Select Module
-    const [selectedModule, setSelectedModule] = useState('');
+            if (permittedSubPages.length === 0) return null;
 
+            return { ...page, subPages: permittedSubPages };
+        })
+        .filter(Boolean) || [];
 
-    // Selected Page
-    const [selectedSubPage, setSelectedSubPage] = useState('');
+    const routeParts = pathname.split('/').filter(Boolean);
+    const selectedThread = routeParts[1] ? formatRouteName(routeParts[1]) : '';
+    const selectedModuleName = currentModule?.moduleName || '';
 
-
-    // Selected thread
-    const [selectedThread, setSelectedThread] = useState('');
-
-
-    // Thread click
-    const pageClick = (page:any) => {
-        setIsSidebarOpened(false);
+    const pageClick = (page: string) => {
         setCurrentPage(page);
-        setSelectedThread(page);
-        if(openedPages.includes(page)){
-            return;
-        } else {
-            const uniquePagesNames = openedPages.filter((item:any, index:any) => openedPages.indexOf(item) === index);
+        if (!openedPages.includes(page)) {
+            const uniquePagesNames = openedPages.filter((item: string, index: number) => openedPages.indexOf(item) === index);
             setOpenedPages([...uniquePagesNames, page]);
-        };
+        }
     };
 
+    if (!currentModule) {
+        return (
+            <div className='flex h-full w-auto items-center justify-center px-4 text-center bg-white'>
+                <div>
+                    <p className='text-sm font-medium text-[#52627A] whitespace-nowrap'>Module not found</p>
+                    <p className='mt-1 text-xs text-[#98A3B2] whitespace-nowrap'>Unable to determine the current module.</p>
+                </div>
+            </div>
+        );
+    }
 
-    // Use Effects
-    useEffect(() => {
-        const threadName = pathname.split('/')[2]?.split('-').join(' ').split(' ').map(word => word[0].toUpperCase() + word.substring(1)).join(' ');
-        setSelectedThread(threadName);
-        const pageName = pathname.split('/')[1].charAt(0).toUpperCase() + pathname.split('/')[1].slice(1);
-        setSelectedModule(pageName);
-    }, [pathname]);
-    useEffect(() => {
-        if(user){
-            // Selected Module
-            const threadName = pathname.split('/')[2]?.split('-').join(' ').split(' ').map(word => word[0].toUpperCase() + word.substring(1)).join(' ');
-            setSelectedThread(threadName);
-            const pageName = pathname.split('/')[1].charAt(0).toUpperCase() + pathname.split('/')[1].slice(1);
-            setSelectedModule(pageName);
-            
-            
-            // Current Module
-            const module = modules.filter(module => module.moduleName === pathname.split('/')[1].split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '));
-            const permittedPages = user?.permissions?.find((p:any) => p?.name === currentModule?.moduleName)?.permissions.filter((pp:any) => pp?.add || pp?.modify || pp?.delete || pp?.print || pp?.read_only)?.map((pp:any) => pp?.main_menu);
-            const permittedSubPages = user?.permissions?.find((p:any) => p?.name === currentModule?.moduleName)?.permissions.filter((pp:any) => pp?.add || pp?.modify || pp?.delete || pp?.print || pp?.read_only)?.map((pp:any) => pp?.sub_menu);
-            setCurrentModule({
-                ...module[0],
-                pages:module[0]?.pages?.filter((p:any) => permittedPages?.includes(p?.pageName))?.map((p:any) => {
-                    return{
-                        ...p,
-                        subPages:p.subPages?.filter((p:any) => permittedSubPages?.includes(p.subPageName) || p?.threads?.filter((t:any) => permittedSubPages?.includes(t))?.length > 0)?.map((sb:any) => {
-                            return{
-                                ...sb,
-                                // threads:sb?.threads?.filter((t:any) => t)
-                                threads:sb?.threads?.filter((t:any) => permittedSubPages?.includes(t))
-                            };
-                        })
-                    };
-                })
-            });
-        }
-    }, [user, pathname, selectedModule]);
+    if (permittedPages.length === 0) {
+        return (
+            <div className='flex h-full w-auto items-center justify-center px-4 text-center bg-white'>
+                <div>
+                    <div className='mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-full bg-[#F4F7FA] text-[#8A96A6]'>
+                        <Image src={currentModule.icon} width={24} height={24} alt='' className='opacity-60' />
+                    </div>
+                    <p className='text-sm font-medium text-[#52627A] whitespace-nowrap'>No pages available</p>
+                    <p className='mt-1 text-xs text-[#98A3B2] whitespace-nowrap'>You don't have permission to access this module.</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
-        <Accordion
-            defaultValue={modules.map(module => module.moduleName)}
-            type='multiple'
-            className='w-full h-full mt-2 overflow-scroll custom-sidebar-scrollbar'
-        >
-            <AccordionItem
-                value={
-                    // @ts-ignore
-                    currentModule?.moduleName
-                }
-            >
-                {/* Layer 1 */}
-                <div
-                    className='cursor-pointer'
-                >
-                    <AccordionTrigger
-                        onClick={() => setIsSidebarOpened(true)}
-                        className='w-full flex flex-row justify-between px-4 text-white rounded-[8px] mt-2 transition bg-[#195382]'
+        <div className={`flex h-full flex-col overflow-hidden bg-white transition-all duration-300 ease-in-out ${isCollapsed ? 'w-16' : 'w-auto min-w-[220px]'}`}>
+            
+            {/* Collapsed State View */}
+            {isCollapsed ? (
+                <div className="flex h-full flex-col items-center py-4 gap-4 animate-in fade-in duration-300">
+                    <button 
+                        onClick={() => setIsCollapsed(false)}
+                        className="flex h-8 w-8 items-center justify-center rounded-md hover:bg-[#F2F9FD] text-[#52627A] transition-colors"
+                        title="Expand sidebar"
                     >
-                        <div className='flex flex-row w-full items-center gap-2 transition'>
-                            <div className={`${!isSidebarOpened ? 'w-full' : 'w-auto'} flex justify-center`}>
-                                {currentModule.icon && (
-                                    <Image
-                                        // @ts-ignore
-                                        src={currentModule.icon}
-                                        width={35}
-                                        height={35}
-                                        alt='Icon'
-                                    />
-                                )}
-                            </div>
-                            <p
-                                className={`${isSidebarOpened ? 'block' : 'hidden'} text-[16px] text-bold`}
-                            >
-                                {
-                                    // @ts-ignore
-                                    currentModule?.moduleName
-                                }
-                            </p>
+                        <ChevronRight size={20} />
+                    </button>
+                    {currentModule?.icon && (
+                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[9px] bg-[#F4F7FA] shadow-sm">
+                            <Image src={currentModule.icon} width={24} height={24} alt="" className="object-contain" />
                         </div>
-                        <ChevronDown className={`h-4 w-4 ml-12 shrink-0 text-white transition-transform duration-200  ${isSidebarOpened ? 'block' : 'hidden'}`}/>
-                    </AccordionTrigger>
+                    )}
                 </div>
-                <AccordionContent
-                    className={`${isSidebarOpened ? 'block' : 'hidden'} bg-[#F6F6F6] mt-2 ml-4`}
-                >
+            ) : (
+                /* Expanded State View */
+                <div className="flex h-full flex-col animate-in fade-in duration-300">
+                    <div className='shrink-0 border-b border-[#E8EDF2] bg-white px-3 py-3'>
+                        {/* Collapse Toggle Button */}
+                        <div className="flex justify-end mb-2">
+                            <button 
+                                onClick={() => setIsCollapsed(true)}
+                                className="flex h-7 w-7 items-center justify-center rounded-md hover:bg-[#F2F9FD] text-[#52627A] transition-colors"
+                                title="Collapse sidebar"
+                            >
+                                <ChevronLeft size={18} />
+                            </button>
+                        </div>
 
+                        <Accordion type='single' collapsible defaultValue={selectedModuleName}>
+                            <AccordionItem value={selectedModuleName} className='border-none'>
+                                <AccordionTrigger className='rounded-[11px] border border-[#DCECF7] bg-[#F2F9FD] px-3 py-3 text-[#2CABE3] transition hover:no-underline hover:bg-[#ECF7FC]'>
+                                    <div className='flex items-center gap-3 flex-1'>
+                                        <div className='flex h-9 w-9 shrink-0 items-center justify-center rounded-[9px] bg-white shadow-sm'>
+                                            {currentModule.icon && (
+                                                <Image src={currentModule.icon} width={24} height={24} alt='' className='object-contain' />
+                                            )}
+                                        </div>
+                                        <div className='text-left'>
+                                            <p className='text-sm font-bold text-[#17233C] whitespace-nowrap'>
+                                                {currentModule.moduleName}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </AccordionTrigger>
 
-                    {/* Module Pages */}
-                    <Accordion
-                        type="single"
-                        collapsible
-                    >
-                        {
-                            // @ts-ignore
-                            currentModule?.pages?.map(page => (
-                                    <AccordionItem value={page.pageName}>
-                                        {/* Layer 2 */}
-                                        <AccordionTrigger
-                                            onClick={() => setSelectedSubPage(page.pageName)}
-                                            className={`flex flex-row justify-between px-4 py-2 mt-[5px] border-l-2 transition rounded-[8px] bg-white hover:bg-[#e7f0f7] hover:border-main-color hover:text-main-color ${selectedSubPage === page.pageName ? 'border-main-color bg-[#e7f0f7] text-main-color' : 'border-white'}`}
-                                        >
-                                            {page.pageName}
-                                            <ChevronDown className={`h-4 w-4 ml-2 shrink-0 transition-transform duration-200 ${isSidebarOpened ? 'block' : 'hidden'}`}/>
-                                        </AccordionTrigger>
-                                        <AccordionContent>
-                                            {
-                                                page.subPages.map((subPage:any) => 
-                                                    {
-                                                        return subPage?.threads ?
-                                                            (
-                                                                <Accordion
-                                                                    type="single"
-                                                                    collapsible
-                                                                >
-                                                                    {/* Layer 3 */}
-                                                                    <AccordionItem value='name'>
-                                                                        <AccordionTrigger
-                                                                            className='flex flex-row items-center justify-start ml-2 py-1 pr-2 transition hover:bg-white'
+                                <AccordionContent className='pb-0 pt-3'>
+                                    <div className='max-h-[calc(100vh-180px)] overflow-y-auto pr-1 custom-sidebar-scrollbar'>
+                                        <Accordion type='single' collapsible defaultValue={selectedThread} className='w-full'>
+                                            {permittedPages.map((page: any) => {
+                                                const hasSubPages = page?.subPages?.length > 0;
+                                                if (!hasSubPages) return null;
+
+                                                return (
+                                                    <AccordionItem key={page.pageName} value={page.pageName} className='border-none'>
+                                                        <AccordionTrigger className={`mb-1 rounded-[9px] px-3 py-2.5 text-left text-[13px] font-semibold transition hover:no-underline w-full ${selectedThread === page.pageName ? 'bg-[#F2F9FD] text-[#2CABE3]' : 'text-[#455368] hover:bg-[#F7F9FB]'}`}>
+                                                            <div className='flex items-center gap-2'>
+                                                                <span className='whitespace-nowrap'>{page.pageName}</span>
+                                                                <ChevronDown size={16} className="shrink-0 text-[#8390A1] transition-transform duration-200" />
+                                                            </div>
+                                                        </AccordionTrigger>
+
+                                                        <AccordionContent className='pb-1 pt-0'>
+                                                            <div className='ml-3 border-l border-[#E5EBF1] pl-3'>
+                                                                {page.subPages.map((subPage: any) => {
+                                                                    const hasThreads = Array.isArray(subPage?.threads) && subPage.threads.length > 0;
+
+                                                                    if (hasThreads) {
+                                                                        return (
+                                                                            <Accordion key={subPage.subPageName} type='single' collapsible className='w-full'>
+                                                                                <AccordionItem value={subPage.subPageName} className='border-none'>
+                                                                                    <AccordionTrigger className='rounded-[8px] px-2 py-2 text-left text-[12px] font-medium text-[#536176] transition hover:bg-[#F7F9FB] hover:no-underline w-full'>
+                                                                                        <div className='flex items-center gap-2'>
+                                                                                            <span className='whitespace-nowrap'>{subPage.subPageName}</span>
+                                                                                            <ChevronDown size={14} className="shrink-0 text-[#8290A1] transition-transform duration-200" />
+                                                                                        </div>
+                                                                                    </AccordionTrigger>
+
+                                                                                    <AccordionContent className='pb-1 pt-0'>
+                                                                                        <div className='ml-2 flex flex-col gap-0.5'>
+                                                                                            {subPage.threads.map((thread: string) => {
+                                                                                                const isSelected = selectedThread === thread;
+                                                                                                return (
+                                                                                                    <button
+                                                                                                        key={thread}
+                                                                                                        type='button'
+                                                                                                        onClick={() => pageClick(thread)}
+                                                                                                        className={`group flex w-full items-center justify-between rounded-[7px] px-2.5 py-2 text-left text-[12px] transition ${isSelected ? 'bg-[#F2F9FD] font-medium text-[#2CABE3]' : 'text-[#687689] hover:bg-[#F7F9FB] hover:text-[#2CABE3]'}`}
+                                                                                                    >
+                                                                                                        <span className='whitespace-nowrap'>{thread}</span>
+                                                                                                        <MoveRight size={14} className={`shrink-0 transition ${isSelected ? 'translate-x-0 opacity-100' : 'translate-x-[-3px] opacity-0 group-hover:translate-x-0 group-hover:opacity-100'}`} />
+                                                                                                    </button>
+                                                                                                );
+                                                                                            })}
+                                                                                        </div>
+                                                                                    </AccordionContent>
+                                                                                </AccordionItem>
+                                                                            </Accordion>
+                                                                        );
+                                                                    }
+
+                                                                    const isSelected = selectedThread === subPage.subPageName;
+                                                                    return (
+                                                                        <button
+                                                                            key={subPage.subPageName}
+                                                                            type='button'
+                                                                            onClick={() => pageClick(subPage.subPageName)}
+                                                                            className={`group flex w-full items-center justify-between rounded-[8px] px-2 py-2 text-left text-[12px] transition ${isSelected ? 'bg-[#F2F9FD] font-medium text-[#2CABE3]' : 'text-[#687689] hover:bg-[#F7F9FB] hover:text-[#2CABE3]'}`}
                                                                         >
-                                                                            <p className='flex flex-row items-center text-[12px] ml-2'>
-                                                                                <p className='font-bold mr-2'>{page.subPages.indexOf(subPage) + 1}.</p>
-                                                                                <p>{subPage.subPageName}</p>
-                                                                            </p>
-                                                                            <ChevronDown className={`h-4 w-4 ml-12 shrink-0 transition-transform duration-200 ${isSidebarOpened ? 'block' : 'hidden'}`}/>
-                                                                        </AccordionTrigger>
-                                                                        <AccordionContent>
-                                                                            {
-                                                                                subPage?.threads?.map((thread:any) => (
-                                                                                    <div onClick={() => pageClick(thread)} className='group flex flex-row items-center ml-8 py-1 pr-2 transition-transform hover:bg-white cursor-pointer'>
-                                                                                        <p
-                                                                                            className={`text-[12px] transition ${selectedThread === thread && 'text-main-color'}`}
-                                                                                        >
-                                                                                            {thread}
-                                                                                        </p>
-                                                                                        <MoveRight
-                                                                                            size={18}
-                                                                                            className='hidden text-main-color ml-2 group-hover:block transition'
-                                                                                        />
-                                                                                    </div>
-                                                                                ))
-                                                                            }
-                                                                        </AccordionContent>
-                                                                    </AccordionItem>
-                                                                </Accordion>
-                                                            )
-                                                            :
-                                                            (
-                                                                <div onClick={() => pageClick(subPage.subPageName)} className='group flex flex-row items-center ml-2 py-1 pr-2 transition hover:bg-white cursor-pointer'>
-                                                                    <div className={`text-[12px] ml-2 flex flex-row items-center ${selectedThread === subPage.subPageName && 'text-main-color'}`}>
-                                                                        <p className='font-bold mr-2'>{page.subPages.indexOf(subPage) + 1}.</p>
-                                                                        <p>{subPage.subPageName}</p>
-                                                                    </div>
-                                                                    <MoveRight
-                                                                        size={18}
-                                                                        className='opacity-0 text-main-color ml-2 group-hover:opacity-100 transition'
-                                                                    />
-                                                                </div>
-                                                            )
-                                                        }
-                                                    )
-                                                }
-                                        </AccordionContent>
-                                    </AccordionItem>
-                            ))
-                        }
-                    </Accordion>
-                </AccordionContent>
-            </AccordionItem>
-        </Accordion>
+                                                                            <div className='flex items-center gap-2'>
+                                                                                <span className='whitespace-nowrap'>{subPage.subPageName}</span>
+                                                                            </div>
+                                                                            <MoveRight size={14} className={`shrink-0 transition ${isSelected ? 'translate-x-0 opacity-100' : 'translate-x-[-3px] opacity-0 group-hover:translate-x-0 group-hover:opacity-100'}`} />
+                                                                        </button>
+                                                                    );
+                                                                })}
+                                                            </div>
+                                                        </AccordionContent>
+                                                    </AccordionItem>
+                                                );
+                                            })}
+                                        </Accordion>
+                                    </div>
+                                </AccordionContent>
+                            </AccordionItem>
+                        </Accordion>
+                    </div>
+                </div>
+            )}
+        </div>
     );
-};
+}

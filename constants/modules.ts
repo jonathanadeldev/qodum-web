@@ -1,16 +1,16 @@
 // Imports
-import AccountsImage from '@/public/assets/Modules Icons/Sidebar icons/Accounts.png';
-import FessImage from '@/public/assets/Modules Icons/Sidebar icons/Fees.png';
-import AdmissionImage from '@/public/assets/Modules Icons/Sidebar icons/Admission.png';
-import PayrollImage from '@/public/assets/Modules Icons/Sidebar icons/Payroll.png';
-import StocksImage from '@/public/assets/Modules Icons/Sidebar icons/Stocks.png';
-import UsersImage from '@/public/assets/Modules Icons/Sidebar icons/Users.png';
-import AttendenceImage from '@/public/assets/Modules Icons/Sidebar icons/Attendance.png';
-import TimetableImage from '@/public/assets/Modules Icons/Sidebar icons/Time Table.png';
-import ExamanationImage from '@/public/assets/Modules Icons/Sidebar icons/Examination.png';
-import LibraryImage from '@/public/assets/Modules Icons/Sidebar icons/Library.png';
-import CBSEImage from '@/public/assets/Modules Icons/Sidebar icons/CBSE DIOS.png';
-import MarksImage from '@/public/assets/Modules Icons/Sidebar icons/Marks.png';
+import AccountsImage from '@/public/assets/Modules Icons/Menu icons/Accounts.png';
+import FessImage from '@/public/assets/Modules Icons/Menu icons/Fees.png';
+import AdmissionImage from '@/public/assets/Modules Icons/Menu icons/Admission.png';
+import PayrollImage from '@/public/assets/Modules Icons/Menu icons/Payroll.png';
+import StocksImage from '@/public/assets/Modules Icons/Menu icons/Stocks.png';
+import UsersImage from '@/public/assets/Modules Icons/Menu icons/Users.png';
+import AttendenceImage from '@/public/assets/Modules Icons/Menu icons/Attendance.png';
+import TimetableImage from '@/public/assets/Modules Icons/Menu icons/Time Table.png';
+import ExamanationImage from '@/public/assets/Modules Icons/Menu icons/Examination.png';
+import LibraryImage from '@/public/assets/Modules Icons/Menu icons/Library.png';
+import CBSEImage from '@/public/assets/Modules Icons/Menu icons/CBSE DIOS.png';
+import MarksImage from '@/public/assets/Modules Icons/Menu icons/Marks.png';
 
 
 

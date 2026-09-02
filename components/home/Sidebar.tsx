@@ -1,16 +1,16 @@
 'use client';
-
-// Imports
 import Image from 'next/image';
 import modules from '@/constants/modulesHome';
-import { Home, LogOut, Settings, ShieldCheck, User } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { Home, LayoutDashboard, LogOut, Settings, ShieldCheck, User, UserRound, } from 'lucide-react';
+import { usePathname, useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 
 // Main function
 export default function Sidebar ({ user }: { user?: any }) {
 
     const router = useRouter();
+    const pathname = usePathname();
 
 
     const handleLogout = async () => {
@@ -26,6 +26,24 @@ export default function Sidebar ({ user }: { user?: any }) {
         }
     };
 
+
+    const navigationItems = [
+        {
+            title: 'Dashboard',
+            href: '/',
+            icon: LayoutDashboard
+        },
+        {
+            title: 'Profile',
+            href: '/profile',
+            icon: UserRound
+        },
+        {
+            title: 'Settings',
+            href: '/settings',
+            icon: Settings
+        }
+    ];
 
     return (
 
@@ -51,37 +69,68 @@ export default function Sidebar ({ user }: { user?: any }) {
                 </div>
 
 
-                {/* Current Dashboard Indicator */}
-                <div className='mt-6 cursor-pointer flex items-center gap-3 rounded-[11px] border border-[#DCECF7] bg-[#F2F9FD] px-3 py-3'>
-                    <div className='flex h-8 w-8 items-center justify-center rounded-[9px] bg-white text-[#2CABE3] shadow-sm'>
-                        <Home size={16} />
+                {/* Navigation */}
+                <nav className='mt-6'>
+
+                    <p className='mb-3 px-2 text-[10px] font-semibold uppercase tracking-[0.8px] text-[#A0A9B5]'>
+                        Main
+                    </p>
+
+                    <div className='flex flex-col gap-1'>
+
+                        {
+                            navigationItems.map((item) => {
+
+                                const Icon = item.icon;
+
+                                const isActive =
+                                    item.href === '/'
+                                        ? pathname === '/'
+                                        : pathname.startsWith(item.href);
+
+                                return (
+
+                                    <Link
+                                        key={item.title}
+                                        href={item.href}
+                                        className={`
+                                            group flex items-center gap-3 rounded-[10px] px-3 py-3
+                                            transition duration-150
+                                            ${
+                                                isActive
+                                                    ? 'border border-[#DCECF7] bg-[#F2F9FD] text-[#2CABE3]'
+                                                    : 'border border-transparent text-[#536176] hover:border-[#E7EEF4] hover:bg-[#F8FAFC] hover:text-[#2CABE3]'
+                                            }
+                                        `}
+                                    >
+
+                                        <Icon
+                                            size={19}
+                                            strokeWidth={1.8}
+                                            className={`
+                                                transition
+                                                ${
+                                                    isActive
+                                                        ? 'text-[#2CABE3]'
+                                                        : 'text-[#718096] group-hover:text-[#2CABE3]'
+                                                }
+                                            `}
+                                        />
+
+                                        <span className='text-sm font-medium'>
+                                            {item.title}
+                                        </span>
+
+                                    </Link>
+
+                                );
+
+                            })
+                        }
+
                     </div>
-                    <div>
-                        <p className='text-sm font-semibold text-[#2CABE3]'>
-                            Dashboard
-                        </p>
-                    </div>
-                </div>
-                <div className='mt-2 cursor-pointer flex items-center gap-3 rounded-[11px] border border-[#DCECF7] bg-[#F2F9FD] px-3 py-3'>
-                    <div className='flex h-8 w-8 items-center justify-center rounded-[9px] bg-white text-[#2CABE3] shadow-sm'>
-                        <User size={16} />
-                    </div>
-                    <div>
-                        <p className='text-sm font-semibold text-[#2CABE3]'>
-                            Profile
-                        </p>
-                    </div>
-                </div>
-                <div className='mt-2 cursor-pointer flex items-center gap-3 rounded-[11px] border border-[#DCECF7] bg-[#F2F9FD] px-3 py-3'>
-                    <div className='flex h-8 w-8 items-center justify-center rounded-[9px] bg-white text-[#2CABE3] shadow-sm'>
-                        <Settings size={16} />
-                    </div>
-                    <div>
-                        <p className='text-sm font-semibold text-[#2CABE3]'>
-                            Settings
-                        </p>
-                    </div>
-                </div>
+
+                </nav>
                     
             </div>
 
