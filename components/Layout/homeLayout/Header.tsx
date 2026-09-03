@@ -45,7 +45,7 @@ const HomeTopbar = ({isSidebarOpened, setIsSidebarOpened, user}:any) => {
 
 
     return (
-        <nav className='flex min-h-[104px] flex-row items-center justify-between rounded-[16px] border border-[#E2E9F2] bg-white px-5 py-4 shadow-[0_3px_16px_rgba(30,55,90,0.04)] md:px-7'>
+        <nav className='flex min-h-26 flex-row items-center justify-between rounded-2xl border border-[#E2E9F2] bg-white px-5 py-4 shadow-[0_3px_16px_rgba(30,55,90,0.04)] md:px-7'>
 
             {/* Date & Time */}
             <div className='flex flex-col items-start'>
@@ -84,11 +84,11 @@ const HomeTopbar = ({isSidebarOpened, setIsSidebarOpened, user}:any) => {
 
                     <div className='hidden flex-col items-end sm:flex'>
 
-                        <p className='max-w-[180px] truncate text-sm font-semibold text-[#17233C]'>
+                        <p className='max-w-45 truncate text-sm font-semibold text-[#17233C]'>
                             {user?.name}
                         </p>
 
-                        <p className='mt-0.5 max-w-[180px] truncate text-xs text-[#7B8798]'>
+                        <p className='mt-0.5 max-w-45 truncate text-xs text-[#7B8798]'>
                             {user?.designation}
                         </p>
 
@@ -101,12 +101,12 @@ const HomeTopbar = ({isSidebarOpened, setIsSidebarOpened, user}:any) => {
                         <img
                             src={user?.profilePicture}
                             alt='User profile picture'
-                            className='h-[52px] w-[52px] rounded-full border border-[#DCE5EE] object-cover'
+                            className='h-13 w-13 rounded-full border border-[#DCE5EE] object-cover'
                         />
 
                     ) : (
 
-                        <div className='flex h-[52px] w-[52px] items-center justify-center rounded-full border border-[#DCE5EE] bg-[#F4F7FA] text-[10px] text-[#7B8798]'>
+                        <div className='flex h-13 w-13 items-center justify-center rounded-full border border-[#DCE5EE] bg-[#F4F7FA] text-[10px] text-[#7B8798]'>
                             No photo
                         </div>
 

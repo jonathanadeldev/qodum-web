@@ -9,6 +9,11 @@ export interface Crumb {
   href?: string; // present only when the crumb is itself a real route
 }
 
+export const getModuleRoot = (pathname: string) => {
+  const [moduleSlug] = pathname.split('/').filter(Boolean);
+  return moduleSlug ? `/${moduleSlug}` : '/';
+};
+
 export const resolveBreadcrumb = (pathname: string): Crumb[] => {
   const segments = pathname.split('/').filter(Boolean);
   if (segments.length === 0) return [];

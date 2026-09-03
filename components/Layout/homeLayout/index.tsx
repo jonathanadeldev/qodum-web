@@ -9,11 +9,11 @@ export default function HomePage({ user }: any) {
 
     return (
         <main className='min-h-screen bg-[#F6F8FB] px-3 py-3 md:px-5 lg:px-6'>
-            <div className='relative mx-auto max-w-[1700px] lg:pl-[250px]'>
+            <div className='relative mx-auto max-w-[1700px] lg:pl-62.5'>
 
                 {/* Sidebar */}
                 <aside className='hidden lg:block'>
-                    <div className='fixed left-4 top-3 h-[calc(100vh-1.5rem)] w-[220px] overflow-hidden rounded-[18px] border border-[#E4E9F0] bg-white shadow-[0_4px_20px_rgba(30,55,90,0.05)]'>
+                    <div className='fixed left-4 top-3 h-[calc(100vh-1.5rem)] w-55 overflow-hidden rounded-[18px] border border-[#E4E9F0] bg-white shadow-[0_4px_20px_rgba(30,55,90,0.05)]'>
                         <Sidebar user={user} />
                     </div>
                 </aside>
@@ -24,8 +24,8 @@ export default function HomePage({ user }: any) {
                     <Header user={user} />
 
                     {/* Welcome Banner */}
-                    <section className='mt-4 overflow-hidden rounded-[16px] border border-[#E2E9F2] bg-white shadow-[0_3px_16px_rgba(30,55,90,0.04)]'>
-                        <div className='relative flex min-h-[120px] items-center overflow-hidden px-6 py-6 md:px-8'>
+                    <section className='mt-4 overflow-hidden rounded-2xl border border-[#E2E9F2] bg-white shadow-[0_3px_16px_rgba(30,55,90,0.04)]'>
+                        <div className='relative flex min-h-30 items-center overflow-hidden px-6 py-6 md:px-8'>
 
                             <div className='relative z-10'>
                                 <p className='mb-1 text-sm font-medium text-[#6E7D91]'>
@@ -42,7 +42,7 @@ export default function HomePage({ user }: any) {
                             </div>
 
                             {/* Decorative building */}
-                            <div className='pointer-events-none absolute right-5 bottom-[-35px] hidden opacity-[0.12] md:block'>
+                            <div className='pointer-events-none absolute right-5 -bottom-8.75 hidden opacity-[0.12] md:block'>
                                 <svg
                                     width='360'
                                     height='170'
@@ -81,7 +81,7 @@ export default function HomePage({ user }: any) {
                     </section>
 
                     {/* Modules */}
-                    <section className='mt-4 rounded-[16px] border border-[#E2E9F2] bg-white p-4 shadow-[0_3px_16px_rgba(30,55,90,0.04)] md:p-5 lg:p-6'>
+                    <section className='mt-4 rounded-2xl border border-[#E2E9F2] bg-white p-4 shadow-[0_3px_16px_rgba(30,55,90,0.04)] md:p-5 lg:p-6'>
                         <ModulesGrid user={user} />
                     </section>
 

@@ -111,7 +111,7 @@ export default function Header({ user }: { user: CurrentUser | null }) {
                     <Search size={16} className='absolute left-3 top-1/2 -translate-y-1/2 text-[#8390A1]' />
                     <Input
                         placeholder='Search...'
-                        className='h-9 w-[240px] rounded-lg border border-[#E8EDF2] bg-[#F7F9FB] pl-9 pr-4 text-sm text-[#17233C] placeholder:text-[#8390A1] focus:border-[#2CABE3] focus:outline-none focus:ring-1 focus:ring-[#2CABE3] transition-all'
+                        className='h-9 w-60 rounded-lg border border-[#E8EDF2] bg-[#F7F9FB] pl-9 pr-4 text-sm text-[#17233C] placeholder:text-[#8390A1] focus:border-[#2CABE3] focus:outline-none focus:ring-1 focus:ring-[#2CABE3] transition-all'
                     />
                 </div>
 

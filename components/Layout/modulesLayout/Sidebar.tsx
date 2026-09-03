@@ -134,7 +134,7 @@ export default function Sidebar({ user }: { user?: any }) {
     };
 
     return (
-        <div className={`flex h-full flex-col overflow-hidden bg-white transition-all duration-300 ease-in-out ${isCollapsed ? 'w-16' : 'w-auto min-w-[220px]'}`}>
+        <div className={`flex h-full flex-col overflow-hidden bg-white transition-all duration-300 ease-in-out ${isCollapsed ? 'w-16' : 'w-auto min-w-55'}`}>
             
             {/* Collapsed State View */}
             {isCollapsed ? (
@@ -237,7 +237,7 @@ export default function Sidebar({ user }: { user?: any }) {
                                                                                                         className={`group flex w-full items-center justify-between rounded-[7px] px-2.5 py-2 text-left text-[12px] transition ${isSelected ? 'bg-[#F2F9FD] font-medium text-[#2CABE3]' : 'text-[#687689] hover:bg-[#F7F9FB] hover:text-[#2CABE3]'}`}
                                                                                                     >
                                                                                                         <span className='whitespace-nowrap'>{thread}</span>
-                                                                                                        <MoveRight size={14} className={`shrink-0 transition ${isSelected ? 'translate-x-0 opacity-100' : 'translate-x-[-3px] opacity-0 group-hover:translate-x-0 group-hover:opacity-100'}`} />
+                                                                                                        <MoveRight size={14} className={`shrink-0 transition ${isSelected ? 'translate-x-0 opacity-100' : '-translate-x-0.75 opacity-0 group-hover:translate-x-0 group-hover:opacity-100'}`} />
                                                                                                     </Link>
                                                                                                 );
                                                                                             })}
@@ -261,7 +261,7 @@ export default function Sidebar({ user }: { user?: any }) {
                                                                             <div className='flex items-center gap-2'>
                                                                                 <span className='whitespace-nowrap'>{subPage.subPageName}</span>
                                                                             </div>
-                                                                            <MoveRight size={14} className={`shrink-0 transition ${isSelected ? 'translate-x-0 opacity-100' : 'translate-x-[-3px] opacity-0 group-hover:translate-x-0 group-hover:opacity-100'}`} />
+                                                                            <MoveRight size={14} className={`shrink-0 transition ${isSelected ? 'translate-x-0 opacity-100' : '-translate-x-0.75 opacity-0 group-hover:translate-x-0 group-hover:opacity-100'}`} />
                                                                         </Link>
                                                                     );
                                                                 })}

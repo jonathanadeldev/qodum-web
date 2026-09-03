@@ -17,7 +17,7 @@ export default function BreadCrumb () {
   const pathname = usePathname();
   const crumbs = resolveBreadcrumb(pathname);
 
-  if (crumbs.length === 0) return null;
+  if (crumbs.length <= 1) return null;
 
   return (
     <div className='px-6 py-2'>
