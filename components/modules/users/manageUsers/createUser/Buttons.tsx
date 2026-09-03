@@ -11,11 +11,7 @@ import { AuthContext } from '@/context/AuthContext';
 
 
 // Main Function
-const Buttons = ({setIsViewOpened, users, updateUser, setUpdateUser, onSubmit, form, setFile, setImgSrc, setSelectedSchools}:any) => {
-
-    // User
-    const {user} = useContext(AuthContext);
-
+const Buttons = ({user, setIsViewOpened, users, updateUser, setUpdateUser, onSubmit, form, setFile, setImgSrc, setSelectedSchools}:any) => {
 
     // Permissions
     const [permissions, setPermissions] = useState({

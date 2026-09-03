@@ -1,4 +1,4 @@
-import HomePage from '@/components/home';
+import HomePage from '@/components/layout/homeLayout';
 import { getCurrentUser } from '@/lib/auth/session';
 
 

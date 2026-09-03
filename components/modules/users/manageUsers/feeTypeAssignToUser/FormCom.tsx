@@ -9,16 +9,14 @@ import LoadingIcon from '@/components/utils/LoadingIcon';
 import {fetchTypes} from '@/lib/actions/fees/feeMaster/feeMaster/type.actions';
 import {fetchUsers, modifyUserFeeTypes} from '@/lib/actions/users/manageUsers/user.actions';
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from '@/components/ui/select';
+import { CurrentUser } from '@/lib/auth/session';
 
 
 
 
 
 // Main function
-const FormCom = () => {
-
-    // User
-    const {user} = useContext(AuthContext);
+const FormCom = ({user}:{user:CurrentUser | null}) => {
 
 
     // Permissions

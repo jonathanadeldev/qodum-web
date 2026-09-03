@@ -86,8 +86,8 @@ export const fetchAcademicYears = async () => {
 
 
         // Fetching
-        const academicYears = await AcademicYear.find();
-        return academicYears;
+        const academicYears = await AcademicYear.find().lean();
+        return JSON.parse(JSON.stringify(academicYears));
 
 
 
@@ -109,16 +109,15 @@ export const fetchAcademicYearsForDashboard = async () => {
 
 
         // Active financial year
-        const financialYear = await FinancialYear.findOne({is_active:true});
-        const activeFinancialYear = {
-            ...financialYear._doc,
-            _id:financialYear._doc._id.toString()
-        };
+        const financialYear = await FinancialYear.findOne({is_active:true}).lean();
 
 
         // Fetching
-        const academicYears = await AcademicYear.find();
-        return {academicYears, activeFinancialYear};
+        const academicYears = await AcademicYear.find().lean();
+        return JSON.parse(JSON.stringify({
+            academicYears,
+            activeFinancialYear: financialYear
+        }));
 
 
 
@@ -140,11 +139,8 @@ export const fetchActiveAcademicYear = async () => {
 
 
         // Fetching
-        const academicYear = await AcademicYear.findOne({is_active:true});
-        const activeAcademicYearRes = {
-            ...academicYear._doc,
-            _id:academicYear._doc._id.toString()
-        };
+        const academicYear = await AcademicYear.findOne({is_active:true}).lean();
+        const activeAcademicYearRes = JSON.parse(JSON.stringify(academicYear));
 
 
         // Return

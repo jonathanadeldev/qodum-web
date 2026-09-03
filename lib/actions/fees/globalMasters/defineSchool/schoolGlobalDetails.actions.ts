@@ -146,13 +146,8 @@ export const fetchGlobalSchoolDetails = async () => {
 
 
         // Fetching
-        const globalSchoolDetails = await GlobalSchoolDetails.find();
-        const globalSchoolDetailsRes = globalSchoolDetails.map((g:any) => {
-            return{
-                ...g._doc,
-                _id:g._doc._id.toString()
-            };
-        });
+        const globalSchoolDetails = await GlobalSchoolDetails.find().lean() as any[];
+        const globalSchoolDetailsRes = JSON.parse(JSON.stringify(globalSchoolDetails));
 
 
         // Return

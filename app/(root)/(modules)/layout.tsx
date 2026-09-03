@@ -1,5 +1,6 @@
-import Header from "@/components/modulesLayout/Header";
-import Sidebar from "@/components/modulesLayout/Sidebar";
+import Breadcrumb from "@/components/layout/modulesLayout/Breadcrumb";
+import Header from "@/components/layout/modulesLayout/Header";
+import Sidebar from "@/components/layout/modulesLayout/Sidebar";
 import { getCurrentUser } from "@/lib/auth/session";
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
@@ -19,7 +20,8 @@ export default async function RootLayout({ children }: { children: React.ReactNo
                     <Header user={user} />
 
                     <main className='mt-4 md:mt-6'>
-                        <div className='rounded-[14px] border border-[#dfe3ea] bg-white p-3 shadow-sm md:p-5'>
+                        <Breadcrumb />
+                        <div className='rounded-[px] border border-[#dfe3ea] bg-white p-3 shadow-sm md:p-5'>
                             {children}
                         </div>
                     </main>

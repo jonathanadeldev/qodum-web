@@ -151,11 +151,15 @@ export const fetchStaff = async () => {
 
 
         // Fetching
-        const staff = await Staff.find({session:activeSession?.year_name});
+        const staff = await Staff
+            .find({session:activeSession?.year_name})
+            .lean();
+
+        const serializableStaff = JSON.parse(JSON.stringify(staff));
 
 
         // Return
-        return staff;
+        return serializableStaff;
 
     } catch (err:any) {
         throw new Error(`Error fetching staff staff: ${err}`);

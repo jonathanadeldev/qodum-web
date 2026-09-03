@@ -6,13 +6,14 @@ import FormCom from '@/components/modules/users/manageUsers/createUser/FormCom';
 import ViewCom from '@/components/modules/users/manageUsers/createUser/ViewCom';
 import { fetchStaff } from '@/lib/actions/payroll/globalMasters/staff.actions';
 import { fetchGlobalSchoolDetails } from '@/lib/actions/fees/globalMasters/defineSchool/schoolGlobalDetails.actions';
+import { CurrentUser } from '@/lib/auth/session';
 
 
 
 
 
 // Main function
-const page = () => {
+export default function CreateUser ({user}:{user:CurrentUser | null}) {
 
     // Is view component opened
     const [isViewOpened, setIsViewOpened] = useState(false);
@@ -89,6 +90,7 @@ const page = () => {
                     />
                 ) : (
                     <FormCom
+                        user={user}
                         users={users}
                         isViewOpened={isViewOpened}
                         setIsViewOpened={setIsViewOpened}
@@ -108,10 +110,3 @@ const page = () => {
         </div>
     );
 };
-
-
-
-
-
-// Export
-export default page;

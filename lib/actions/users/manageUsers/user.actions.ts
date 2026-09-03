@@ -773,11 +773,16 @@ export const fetchUsers = async () => {
 
         // Fetching
         // const users = await User.find({});
-        const users = await User.find({session:activeSession?.year_name});
+        const users = await User
+            .find({session:activeSession?.year_name})
+            .select('-password')
+            .lean();
+
+        const serializableUsers = JSON.parse(JSON.stringify(users));
 
 
         // Return
-        return users;
+        return serializableUsers;
 
     } catch (err:any) {
         throw new Error(`Error fetching users: ${err}`);

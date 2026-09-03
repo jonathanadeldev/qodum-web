@@ -3,7 +3,7 @@
 import Header from './Header';
 import Sidebar from './Sidebar';
 import ModulesGrid from './ModulesGrid';
-import Footer from '../Layout/Footer';
+import Footer from '../Footer';
 
 export default function HomePage({ user }: any) {
 

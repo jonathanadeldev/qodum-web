@@ -24,7 +24,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 
 
 // Main function
-const FormCom = ({setIsViewOpened, users, updateUser, setUpdateUser, staff, file, setFile, imgSrc, setImgSrc, schools, selectedSchools, setSelectedSchools}:any) => {
+const FormCom = ({user, setIsViewOpened, users, updateUser, setUpdateUser, staff, file, setFile, imgSrc, setImgSrc, schools, selectedSchools, setSelectedSchools}:any) => {
 
     // Toast
     const {toast} = useToast();
@@ -216,7 +216,7 @@ const FormCom = ({setIsViewOpened, users, updateUser, setUpdateUser, staff, file
                         <div className='w-[100px] h-[100px] mb-2 flex items-center justify-center bg-[#ccc] cursor-pointer rounded-[4px] transition hover:opacity-90'>
                             <label
                                 // @ts-ignore
-                                for='image'
+                                htmlFor='image'
                                 className='flex items-center justify-center h-full w-full cursor-pointer text-xs font-semibold'
                             >
                                 {imgSrc !== '' ? (
@@ -538,7 +538,7 @@ const FormCom = ({setIsViewOpened, users, updateUser, setUpdateUser, staff, file
                     {isLoading ? (
                         <LoadingIcon />
                     ) : (
-                        <Buttons setIsViewOpened={setIsViewOpened} users={users} updateUser={updateUser} setUpdateUser={setUpdateUser} onSubmit={onSubmit} form={form} setFile={setFile} setImgSrc={setImgSrc} setSelectedSchools={setSelectedSchools}/>
+                        <Buttons user={user} setIsViewOpened={setIsViewOpened} users={users} updateUser={updateUser} setUpdateUser={setUpdateUser} onSubmit={onSubmit} form={form} setFile={setFile} setImgSrc={setImgSrc} setSelectedSchools={setSelectedSchools}/>
                     )}
 
                 </form>

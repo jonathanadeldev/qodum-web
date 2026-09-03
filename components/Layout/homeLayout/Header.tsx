@@ -2,7 +2,7 @@
 
 // Imports
 import moment from 'moment';
-import Clock from 'react-live-clock';
+import {useEffect, useState} from 'react';
 import {useRouter} from 'next/navigation';
 import {LogOut, Menu, Bell} from 'lucide-react';
 
@@ -13,9 +13,20 @@ const HomeTopbar = ({isSidebarOpened, setIsSidebarOpened, user}:any) => {
     const router = useRouter();
 
 
-    // Today's Date
-    const date = new Date();
-    const today = moment(date).format('ddd, DD MMM Y');
+    const [today, setToday] = useState('');
+    const [currentTime, setCurrentTime] = useState('--:--:--');
+
+    useEffect(() => {
+        const updateDateTime = () => {
+            const date = new Date();
+            setToday(moment(date).format('ddd, DD MMM Y'));
+            setCurrentTime(moment(date).format('HH:mm:ss'));
+        };
+
+        updateDateTime();
+        const interval = window.setInterval(updateDateTime, 1000);
+        return () => window.clearInterval(interval);
+    }, []);
 
 
     async function handleLogout() {
@@ -44,11 +55,9 @@ const HomeTopbar = ({isSidebarOpened, setIsSidebarOpened, user}:any) => {
                 </p>
 
                 <div className='flex items-baseline'>
-                    <Clock
-                        format={'HH:mm:ss'}
-                        ticking={true}
-                        className='text-[30px] font-semibold tracking-[-0.5px] text-[#17233C] md:text-[36px]'
-                    />
+                    <time className='text-[30px] font-semibold tracking-[-0.5px] text-[#17233C] md:text-[36px]'>
+                        {currentTime}
+                    </time>
 
                     <span className='ml-2 text-xs font-medium text-[#7B8798] md:text-sm'>
                         Local Time

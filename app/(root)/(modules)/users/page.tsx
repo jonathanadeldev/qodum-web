@@ -7,6 +7,10 @@ export default async function Page () {
   const user = await getCurrentUser();
 
   return(
-    <Users user={user}/>
+    <div>
+      {/* <Users user={user}/> */}
+      Users Dashboard
+
+    </div>
   );
 };
