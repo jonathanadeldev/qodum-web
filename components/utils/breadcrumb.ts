@@ -49,3 +49,8 @@ export const resolveBreadcrumb = (pathname: string): Crumb[] => {
   // Leaf slug didn't match anything in the tree yet (e.g. still-unwired page)
   return [moduleCrumb];
 };
+
+export const getTabPath = (pathname: string) => {
+  const segments = pathname.split('/').filter(Boolean);
+  return segments.length >= 2 ? `/${segments[0]}/${segments[1]}` : pathname;
+};

@@ -1,4 +1,4 @@
-import CreateUser from "@/components/modules/users/manageUsers/createUser";
+import FormCom from "@/components/modules/users/manageUsers/createUser/FormCom";
 import { getCurrentUser } from "@/lib/auth/session";
 
 export default async function Page(){
@@ -7,7 +7,7 @@ export default async function Page(){
 
     return(
         <div>
-            <CreateUser user={user}/>
+            <FormCom user={user}/>
         </div>
     )
 }

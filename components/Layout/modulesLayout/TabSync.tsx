@@ -1,10 +1,9 @@
-// components/Layout/Pages/TabSync.tsx
 'use client';
 
 import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { useTabsStore } from '@/store/tabStore';
-import { resolveBreadcrumb } from '@/components/utils/breadcrumb';
+import { resolveBreadcrumb, getTabPath } from '@/components/utils/breadcrumb';
 
 const TabSync = () => {
   const pathname = usePathname();
@@ -14,9 +13,10 @@ const TabSync = () => {
     const segments = pathname.split('/').filter(Boolean);
     if (segments.length < 2) return; // module root — not a tab
 
-    const crumbs = resolveBreadcrumb(pathname);
-    const label = crumbs[crumbs.length - 1]?.label ?? pathname;
-    openTab({ path: pathname, label });
+    const tabPath = getTabPath(pathname); // always the 2-segment base — /users/create-user, never /view
+    const crumbs = resolveBreadcrumb(tabPath);
+    const label = crumbs[crumbs.length - 1]?.label ?? tabPath;
+    openTab({ path: tabPath, label });
   }, [pathname, openTab]);
 
   return null;

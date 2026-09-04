@@ -19,11 +19,13 @@ const PagesList = () => {
 
   if (!hasHydrated || openTabs.length === 0) return null;
 
+  const isWithinTab = (path: string) => pathname === path || pathname.startsWith(`${path}/`);
+
   const handleClose = (e: React.MouseEvent, path: string) => {
     e.stopPropagation();
     closeTab(path);
     clearPage(path);
-    if (pathname === path) {
+    if (isWithinTab(path)) {
       const remaining = openTabs.filter((t) => t.path !== path);
       router.push(remaining[remaining.length - 1]?.path ?? getModuleRoot(path));
     }
@@ -36,10 +38,10 @@ const PagesList = () => {
   };
 
   return (
-    <div className='flex items-center justify-between px-4 border-b border-[#E5E8EF]'>
+    <div className='flex items-center justify-between px-4 bg-white border-b border-[#E5E8EF]'>
       <div className='flex items-center gap-1 overflow-x-auto'>
         {openTabs.map((tab) => {
-          const isActive = tab.path === pathname;
+          const isActive = isWithinTab(tab.path);
           return (
             <div
               key={tab.path}

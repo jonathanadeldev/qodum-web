@@ -1,3 +1,4 @@
+// components/modules/users/manageUsers/createUser/FormCom.tsx
 'use client';
 // Imports
 import * as z from 'zod';
@@ -14,62 +15,91 @@ import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from '@/c
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { Check, ChevronDown, X } from 'lucide-react';
 import LoadingIcon from '@/components/utils/LoadingIcon';
 import { uploadUserImage } from '@/lib/actions/image.actions';
 import { Checkbox } from '@/components/ui/checkbox';
-
-
-
-
+import { useUsersList, useStaffList, useSchoolsList } from '@/lib/hooks/useUserModuleData';
+import { useFieldState, usePageStateStore } from '@/store/pageStateStore';
+import { getTabPath } from '@/components/utils/breadcrumb';
+import { emptyUser } from "@/constants/emptyUser"
 
 // Main function
-const FormCom = ({user, setIsViewOpened, users, updateUser, setUpdateUser, staff, file, setFile, imgSrc, setImgSrc, schools, selectedSchools, setSelectedSchools}:any) => {
+const FormCom = ({user}: {user: any}) => {
+
+    // Tab path — same key ViewCom writes the picked record to
+    const pathname = usePathname();
+    const tabPath = getTabPath(pathname);
 
     // Toast
     const {toast} = useToast();
 
-
     // Is loading
     const [isLoading, setIsLoading] = useState(false);
 
+    // Data
+    const {users, mutateUsers} = useUsersList();
+    const staff = useStaffList();
+    const schools = useSchoolsList();
+
+    // Store access
+    const clearPage = usePageStateStore((s) => s.clearPage);
+    const setStoreField = usePageStateStore((s) => s.setField);
+
+    // Editing target — written by ViewCom, read here on mount
+    const [editingUser, setEditingUser] = useFieldState('editingUser', emptyUser, tabPath);
+
+    // Form-local pieces, now persisted per tab instead of plain useState
+    const [selectedSchools, setSelectedSchools] = useFieldState('selectedSchools', editingUser?.schools || [], tabPath);
+    const [file, setFile] = useFieldState<any>('file', null, tabPath);
+    const [imgSrc, setImgSrc] = useFieldState('imgSrc', '', tabPath);
+
+    // Live draft of whatever's currently typed, keyed to this tab
+    const [formDraft] = useFieldState<any>('formDraft', null, tabPath);
 
     // Comparison object
     const comparisonObject = {
-        name:updateUser.name,
-        user_name:updateUser.user_name,
-        password:updateUser.password,
-        is_reset_password:updateUser.is_reset_password,
-        designation:updateUser.designation,
-        email:updateUser.email,
-        employee:updateUser.employee,
-        mobile:updateUser.mobile,
-        profile_picture:updateUser.profile_picture,
-        schools:updateUser.schools,
-        is_active:updateUser.is_active,
-        enable_otp:updateUser.enable_otp
+        name:editingUser.name,
+        user_name:editingUser.user_name,
+        password:editingUser.password,
+        is_reset_password:editingUser.is_reset_password,
+        designation:editingUser.designation,
+        email:editingUser.email,
+        employee:editingUser.employee,
+        mobile:editingUser.mobile,
+        profile_picture:editingUser.profile_picture,
+        schools:editingUser.schools,
+        is_active:editingUser.is_active,
+        enable_otp:editingUser.enable_otp
     };
-
 
     // Form
     const form = useForm({
         resolver:zodResolver(UserValidation),
-        defaultValues:{
-            name:updateUser.id === '' ? '' : updateUser.name,
-            user_name:updateUser.id === '' ? '' : updateUser.user_name,
-            password:updateUser.id === '' ? '' : updateUser.password,
-            is_reset_password:updateUser.id === '' ? false : updateUser.is_reset_password,
-            designation:updateUser.id === '' ? '' : updateUser.designation,
-            email:updateUser.id === '' ? '' : updateUser.email,
-            employee:updateUser.id === '' ? '' : updateUser.employee,
-            mobile:updateUser.id === '' ? 0 : updateUser.mobile,
-            profile_picture:updateUser.id === '' ? '' : updateUser.profile_picture,
-            schools:updateUser.id === '' ? [] : updateUser.schools,
-            is_active:updateUser.id === '' ? false : updateUser.is_active,
-            enable_otp:updateUser.id === '' ? false : updateUser.enable_otp
+        defaultValues: formDraft ?? {
+            name:editingUser.id === '' ? '' : editingUser.name,
+            user_name:editingUser.id === '' ? '' : editingUser.user_name,
+            password:editingUser.id === '' ? '' : editingUser.password,
+            is_reset_password:editingUser.id === '' ? false : editingUser.is_reset_password,
+            designation:editingUser.id === '' ? '' : editingUser.designation,
+            email:editingUser.id === '' ? '' : editingUser.email,
+            employee:editingUser.id === '' ? '' : editingUser.employee,
+            mobile:editingUser.id === '' ? 0 : editingUser.mobile,
+            profile_picture:editingUser.id === '' ? '' : editingUser.profile_picture,
+            schools:editingUser.id === '' ? [] : editingUser.schools,
+            is_active:editingUser.id === '' ? false : editingUser.is_active,
+            enable_otp:editingUser.id === '' ? false : editingUser.enable_otp
         }
     });
 
+    // Sync every change back into the store — this is what preserves in-progress typing
+    useEffect(() => {
+        const subscription = form.watch((values) => {
+            setStoreField(tabPath, 'formDraft', values);
+        });
+        return () => subscription.unsubscribe();
+    }, [form, tabPath, setStoreField]);
 
     // Submit handler
     const onSubmit = async (values:z.infer<typeof UserValidation>) => {
@@ -77,11 +107,11 @@ const FormCom = ({user, setIsViewOpened, users, updateUser, setUpdateUser, staff
         // Setting is loading to true
         setIsLoading(true);
 
-
         // Create user
-        if(updateUser.id === ''){
+        if(editingUser.id === ''){
             if(users.map((r:any) => r.user_name).includes(values.user_name)){
                 toast({title:'User already exists', variant:'error'});
+                setIsLoading(false);
                 return;
             };
             const randomNumber = Math.floor(Math.random() * 1000000) + 1;
@@ -90,7 +120,7 @@ const FormCom = ({user, setIsViewOpened, users, updateUser, setUpdateUser, staff
                 formData.append('file', file);
                 await uploadUserImage({data:formData, name:`${values.name.toLowerCase().replace(/\s+/g, '-')}-${randomNumber}`});
             };
-            const res = await createUser({
+            await createUser({
                 name:values.name,
                 user_name:values.user_name,
                 password:values.password,
@@ -110,6 +140,7 @@ const FormCom = ({user, setIsViewOpened, users, updateUser, setUpdateUser, staff
         else if(!deepEqual(comparisonObject, values) || file || JSON.stringify(comparisonObject.schools) !== JSON.stringify(selectedSchools)){
             if(comparisonObject.user_name !== values.user_name && users.map((r:any) => r.user_name).includes(values.user_name)){
                 toast({title:'User already exists', variant:'error'});
+                setIsLoading(false);
                 return;
             };
             const randomNumber = Math.floor(Math.random() * 1000000) + 1;
@@ -119,7 +150,7 @@ const FormCom = ({user, setIsViewOpened, users, updateUser, setUpdateUser, staff
                 await uploadUserImage({data:formData, name:`${values.name.toLowerCase().replace(/\s+/g, '-')}-${randomNumber}`});
             };
             await modifyUser({
-                id:updateUser.id,
+                id:editingUser.id,
                 name:values.name,
                 user_name:values.user_name,
                 password:values.password,
@@ -136,29 +167,17 @@ const FormCom = ({user, setIsViewOpened, users, updateUser, setUpdateUser, staff
             toast({title:'Updated Successfully!'});
         }
         // Delete user
-        else if(updateUser.isDeleteClicked){
-            await deleteUser({id:updateUser.id});
+        else if(editingUser.isDeleteClicked){
+            await deleteUser({id:editingUser.id});
             toast({title:'Deleted Successfully!'});
         };
 
+        // Refresh the cached list instead of the old refetch-on-toggle
+        mutateUsers();
 
-        // Reseting update entity
-        setUpdateUser({
-            id:'',
-            isDeleteClicked:false,
-            name:'',
-            user_name:'',
-            password:'',
-            is_reset_password:false,
-            designation:'',
-            email:'',
-            employee:'',
-            mobile:0,
-            profile_picture:'',
-            schools:[],
-            is_active:false,
-            enable_otp:false,
-        });
+        // Wipes editingUser, formDraft, selectedSchools, file, imgSrc — all under this tab's key
+        clearPage(tabPath);
+
         // Reseting form
         form.reset({
             name:'',
@@ -174,15 +193,10 @@ const FormCom = ({user, setIsViewOpened, users, updateUser, setUpdateUser, staff
             is_active:false,
             enable_otp:false,
         });
-        setFile(null);
-        setImgSrc('');
-        setSelectedSchools([]);
-
 
         // Setting is loading to false
         setIsLoading(false);
     };
-
 
     // Handle on change
     const handleOnChange = (e:any) => {
@@ -194,10 +208,6 @@ const FormCom = ({user, setIsViewOpened, users, updateUser, setUpdateUser, staff
         };
         reader.readAsDataURL(e.target.files[0]);
     };
-
-
-    // Use effect
-    useEffect(() => {}, [form.watch('is_reset_password'), form.watch('is_active'), form.watch('enable_otp')]);
 
     return (
         <div className='w-[90%] max-w-[500px] mb-10 flex flex-col items-center rounded-[8px] border-[0.5px] border-[#E8E8E8] sm:w-[80%]'>
@@ -225,10 +235,10 @@ const FormCom = ({user, setIsViewOpened, users, updateUser, setUpdateUser, staff
                                         src={imgSrc}
                                         className='w-full h-full rounded-[4px]'
                                     />
-                                ) : updateUser.profile_picture ? (
+                                ) : editingUser.profile_picture ? (
                                     <img
                                         alt="User's image"
-                                        src={updateUser.profile_picture}
+                                        src={editingUser.profile_picture}
                                         className='w-full h-full rounded-[4px]'
                                     />
                                 ) : (
@@ -245,7 +255,6 @@ const FormCom = ({user, setIsViewOpened, users, updateUser, setUpdateUser, staff
                             />
                         </div>
                     </div>
-
 
                     {/* Name */}
                     <FormField
@@ -269,7 +278,6 @@ const FormCom = ({user, setIsViewOpened, users, updateUser, setUpdateUser, staff
                         )}
                     />
 
-
                     {/* User Name */}
                     <FormField
                         control={form.control}
@@ -291,7 +299,6 @@ const FormCom = ({user, setIsViewOpened, users, updateUser, setUpdateUser, staff
                             </FormItem>
                         )}
                     />
-
 
                     {/* Password */}
                     <FormField
@@ -316,7 +323,6 @@ const FormCom = ({user, setIsViewOpened, users, updateUser, setUpdateUser, staff
                         )}
                     />
 
-
                     {/* Reset Password */}
                     <div className='relative w-full h-6 flex flex-col items-start justify-end space-x-2 sm:flex-row sm:items-center'>
                         <Switch
@@ -331,7 +337,6 @@ const FormCom = ({user, setIsViewOpened, users, updateUser, setUpdateUser, staff
                             Reset Password
                         </Label>
                     </div>
-
 
                     {/* Designation */}
                     <FormField
@@ -355,7 +360,6 @@ const FormCom = ({user, setIsViewOpened, users, updateUser, setUpdateUser, staff
                         )}
                     />
 
-
                     {/* Email */}
                     <FormField
                         control={form.control}
@@ -377,7 +381,6 @@ const FormCom = ({user, setIsViewOpened, users, updateUser, setUpdateUser, staff
                             </FormItem>
                         )}
                     />
-
 
                     {/* Employee */}
                     <FormField
@@ -416,7 +419,6 @@ const FormCom = ({user, setIsViewOpened, users, updateUser, setUpdateUser, staff
                         )}
                     />
 
-
                     {/* Mobile */}
                     <FormField
                         control={form?.control}
@@ -439,7 +441,6 @@ const FormCom = ({user, setIsViewOpened, users, updateUser, setUpdateUser, staff
                             </FormItem>
                         )}
                     />
-
 
                     {/* Schools */}
                     <div className='w-full flex flex-row items-center'>
@@ -501,7 +502,6 @@ const FormCom = ({user, setIsViewOpened, users, updateUser, setUpdateUser, staff
                         </div>
                     </div>
 
-
                     {/* Is Active */}
                     <div className='relative w-full h-6 flex flex-col items-start justify-end space-x-2 sm:flex-row sm:items-center'>
                         <Switch
@@ -516,7 +516,6 @@ const FormCom = ({user, setIsViewOpened, users, updateUser, setUpdateUser, staff
                             Is Active
                         </Label>
                     </div>
-
 
                     {/* Enable OTP */}
                     <div className='relative w-full h-6 flex flex-col items-start justify-end space-x-2 sm:flex-row sm:items-center'>
@@ -533,12 +532,11 @@ const FormCom = ({user, setIsViewOpened, users, updateUser, setUpdateUser, staff
                         </Label>
                     </div>
 
-
                     {/* Buttons */}
                     {isLoading ? (
                         <LoadingIcon />
                     ) : (
-                        <Buttons user={user} setIsViewOpened={setIsViewOpened} users={users} updateUser={updateUser} setUpdateUser={setUpdateUser} onSubmit={onSubmit} form={form} setFile={setFile} setImgSrc={setImgSrc} setSelectedSchools={setSelectedSchools}/>
+                        <Buttons user={user} users={users} editingUser={editingUser} onSubmit={onSubmit} form={form}/>
                     )}
 
                 </form>
@@ -547,9 +545,4 @@ const FormCom = ({user, setIsViewOpened, users, updateUser, setUpdateUser, staff
     );
 };
 
-
-
-
-
-// Export
 export default FormCom;

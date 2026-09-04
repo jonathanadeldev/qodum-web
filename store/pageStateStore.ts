@@ -23,11 +23,12 @@ export const usePageStateStore = create<PageStateStore>((set) => ({
     clearAllPages: () => set({ pages: {} }),
 }));
 
-// Convenience hook for page components — this is the one you'll actually use
-export const useFieldState = <T,>(field: string, fallback: T) => {
+
+export const useFieldState = <T,>(field: string, fallback: T, pathOverride?: string) => {
   const pathname = usePathname();
-  const value = usePageStateStore((s) => s.pages[pathname]?.[field] ?? fallback);
+  const key = pathOverride ?? pathname;
+  const value = usePageStateStore((s) => s.pages[key]?.[field] ?? fallback);
   const setField = usePageStateStore((s) => s.setField);
-  const setValue = (v: T) => setField(pathname, field, v);
+  const setValue = (v: T) => setField(key, field, v);
   return [value, setValue] as const;
 };

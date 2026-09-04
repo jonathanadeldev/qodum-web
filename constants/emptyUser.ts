@@ -1,0 +1,16 @@
+export const emptyUser = {
+  id: '',
+  isDeleteClicked: false,
+  name: '',
+  user_name: '',
+  password: '',
+  is_reset_password: false,
+  designation: '',
+  email: '',
+  employee: '',
+  mobile: 0,
+  profile_picture: '',
+  schools: [],
+  is_active: false,
+  enable_otp: false,
+};
